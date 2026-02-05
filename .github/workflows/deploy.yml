@@ -1,0 +1,39 @@
+name: Deploy to Hostagle
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Get the latest code
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      # 2. Install Node.js
+      - name: 🟢 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # 3. Install Dependencies & Build
+      - name: 🔨 Build Project
+        run: |
+          npm ci
+          npm run build
+
+      # 4. Upload to Hostagle via FTP
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: icanandiwillsoon2@intellectexplorer.com
+          username: ftp.intellectexplorer.com
+          password: Alasyoyo@12
+          local-dir: ./dist/
+          server-dir: /public_html/
+          dangerously-force-clean: true
