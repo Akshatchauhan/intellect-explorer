@@ -31,8 +31,8 @@ jobs:
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: icanandiwillsoon2@intellectexplorer.com
-          username: ftp.intellectexplorer.com
+          server: ftp.intellectexplorer.com
+          username: icanandiwillsoon2@intellectexplorer.com
           password: Alasyoyo@12
           local-dir: ./dist/
           server-dir: /public_html/
