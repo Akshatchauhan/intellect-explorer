@@ -35,5 +35,5 @@ jobs:
           username: icanandiwillsoon2@intellectexplorer.com
           password: Alasyoyo@12
           local-dir: ./dist/
-          server-dir: /public_html/
+          server-dir: /
           dangerously-force-clean: true
