@@ -11,14 +11,15 @@ const ProjectView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // 1. Retrieve data
   const projects = getProjects(); 
   const project = projects.find(p => p.id === id); 
 
+  // 2. Lock Screen Logic
   const storageKey = `access_${id}`;
-
   const [isUnlocked, setIsUnlocked] = useState(() => {
     if (!project) return false;
-    if (!project.password) return true;
+    if (!project.password) return true; // No password = auto unlock
     return sessionStorage.getItem(storageKey) === 'true';
   });
 
@@ -47,7 +48,6 @@ const ProjectView = () => {
   // --- NORMAL CONTENT ---
   return (
     <PageTransition>
-      {/* CONTAINER: Matches PostView padding */}
       <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-3xl mx-auto pb-40 relative z-10">
         
         {/* 1. BACK BUTTON */}
@@ -63,7 +63,7 @@ const ProjectView = () => {
           </motion.div>
         </Link>
 
-        {/* 2. HEADER SECTION */}
+        {/* 2. HERO SECTION */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }}
@@ -83,16 +83,28 @@ const ProjectView = () => {
             {project.title}
           </h1>
           
-          {/* Subtitle */}
-          <p className="text-lg md:text-xl text-zinc-400 font-light leading-relaxed">
-            {project.subtitle}
+          {/* Subtitle / Description (Mapped correctly now) */}
+          <p className="text-lg md:text-xl text-zinc-400 font-light leading-relaxed mb-8">
+            {project.description || project.subtitle}
           </p>
 
+          {/* Hero Image (NEW) */}
+          {project.image && (
+             <div className="w-full aspect-video rounded-sm overflow-hidden border border-white/10 mb-8 bg-zinc-900">
+               <img 
+                 src={project.image} 
+                 alt={project.title} 
+                 className="w-full h-full object-cover opacity-90"
+               />
+             </div>
+          )}
+
           {/* Action Buttons */}
-          <div className="mt-8 flex gap-4">
-            {project.liveUrl && (
+          <div className="flex gap-4">
+            {/* LINK MAPPING: Checks 'link' OR 'liveUrl' to be safe */}
+            {(project.link || project.liveUrl) && (
               <a 
-                href={project.liveUrl} 
+                href={project.link || project.liveUrl} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="flex items-center gap-2 bg-white text-black px-6 py-3 rounded-full hover:bg-zinc-200 transition-colors"
@@ -101,9 +113,11 @@ const ProjectView = () => {
                 <span className="font-mono text-[10px] font-bold tracking-widest uppercase">Launch</span>
               </a>
             )}
-            {project.githubUrl && (
+            
+            {/* REPO MAPPING: Checks 'repo' OR 'githubUrl' */}
+            {(project.repo || project.githubUrl) && (
               <a 
-                href={project.githubUrl} 
+                href={project.repo || project.githubUrl} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="flex items-center gap-2 border border-zinc-700 text-white px-6 py-3 rounded-full hover:bg-zinc-800 transition-colors"
@@ -115,25 +129,13 @@ const ProjectView = () => {
           </div>
         </motion.div>
 
-        {/* 3. CONTENT RENDERER (Editorial Style) */}
+        {/* 3. MARKDOWN CONTENT */}
         <article className="prose prose-invert lg:prose-lg max-w-none 
-          
-          /* Headings */
           prose-headings:font-serif prose-headings:font-normal prose-headings:text-zinc-200
-          
-          /* Paragraphs */
           prose-p:text-zinc-400 prose-p:font-light prose-p:leading-relaxed
-          
-          /* Links */
           prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
-          
-          /* Blockquotes */
           prose-blockquote:border-l-blue-500 prose-blockquote:bg-zinc-900/30 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:text-zinc-300 prose-blockquote:not-italic prose-blockquote:font-serif
-          
-          /* Code */
           prose-code:text-blue-300 prose-code:bg-zinc-900 prose-code:px-1 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
-          
-          /* Images */
           prose-img:rounded-sm prose-img:border prose-img:border-white/10"
         >
           <ReactMarkdown>

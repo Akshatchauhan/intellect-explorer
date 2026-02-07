@@ -86,7 +86,12 @@ const BackgroundAudio = () => {
       />
 
       <motion.button
-        className="fixed bottom-8 right-8 z-50 flex items-center gap-3 group"
+        // --- UPDATED POSITIONING CLASSES ---
+        // Mobile: bottom-24 (clear navbar), right-4 (tight to edge)
+        // Desktop (md): bottom-8, right-8 (original spot)
+        // Z-Index: z-[100] (force above everything)
+        className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-[100] flex items-center gap-3 group"
+        
         onClick={toggleAudio}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -100,7 +105,7 @@ const BackgroundAudio = () => {
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 10 }}
-              className="text-xs font-mono tracking-widest text-zinc-500 uppercase"
+              className="text-xs font-mono tracking-widest text-zinc-500 uppercase hidden md:block" // Hide text on mobile to save space
             >
               {isPlaying ? 'Now Playing' : 'Muted'}
             </motion.span>

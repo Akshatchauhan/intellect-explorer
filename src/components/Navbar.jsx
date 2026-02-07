@@ -83,11 +83,11 @@ const Navbar = () => {
     { path: '/contact',   label: 'Uplink',    icon: <IconUplink /> },
   ];
 
-  // --- FIXED LUXURY ANIMATION ---
+  // --- ANIMATION VARIANTS ---
   const dockVariants = {
     hidden: { 
-      y: 150, // Increased to ensure it fully clears the screen
-      opacity: 1, // FIX: Keep opacity at 1. Don't fade out, just slide out.
+      y: 150, 
+      opacity: 1, 
       scale: 1,
       transition: { 
         duration: 0.5, 
@@ -115,7 +115,7 @@ const Navbar = () => {
           initial="hidden"
           animate="visible"
           exit="hidden"
-          className="fixed bottom-8 inset-x-0 mx-auto z-50 flex justify-center w-full px-4 pointer-events-none will-change-transform" // Added will-change-transform
+          className="fixed bottom-8 inset-x-0 mx-auto z-50 flex justify-center w-full px-4 pointer-events-none will-change-transform"
         >
           <motion.nav
             onMouseEnter={handleMouseEnter}
@@ -127,14 +127,15 @@ const Navbar = () => {
               gap: showLabels ? 8 : (isMobile ? 6 : 0), 
               padding: 8
             }}
-            transition={{ type: "spring", stiffness: 150, damping: 20, mass: 0.8 }}
+            // Tighter spring for the container expansion/contraction
+            transition={{ type: "spring", stiffness: 200, damping: 25 }}
             className="pointer-events-auto relative flex items-center 
-              bg-gradient-to-b from-white/15 to-transparent backdrop-blur-xl 
-              border border-white/10 
-              shadow-[0_4px_24px_-1px_rgba(0,0,0,0.2)] 
+              bg-zinc-900/20 backdrop-blur-xl 
+              border border-white/15 
+              shadow-[0_4px_24px_-1px_rgba(0,0,0,0.4)] 
               overflow-hidden cursor-pointer"
             style={{
-              boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.25), 0 8px 32px 0 rgba(0, 0, 0, 0.3)' 
+              boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.2), 0 8px 32px 0 rgba(0, 0, 0, 0.5)' 
             }}
           >
             {links.map((link) => {
@@ -152,6 +153,7 @@ const Navbar = () => {
                     {isActive && (
                       <motion.div
                         layoutId="activePill"
+                        layout="position" // Ensures precise positioning calculation
                         initial={false} 
                         className="absolute inset-0 rounded-full z-0 overflow-hidden bg-gradient-to-b from-white/20 to-white/5 backdrop-blur-md"
                         style={{
@@ -161,7 +163,13 @@ const Navbar = () => {
                             inset 0 0 12px 0 rgba(255,255,255,0.15)
                           `
                         }}
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        // FIX: Changed from 'duration' to 'stiffness/damping'
+                        // This prevents velocity buildup on rapid clicks.
+                        transition={{ 
+                            type: "spring", 
+                            stiffness: 300, 
+                            damping: 30 
+                        }}
                       />
                     )}
 
@@ -178,7 +186,7 @@ const Navbar = () => {
                             initial={{ opacity: 0, width: 0, marginLeft: 0 }}
                             animate={{ opacity: 1, width: 'auto', marginLeft: 8 }}
                             exit={{ opacity: 0, width: 0, marginLeft: 0 }}
-                            transition={{ duration: 0.3, ease: "easeInOut" }} 
+                            transition={{ duration: 0.2, ease: "easeOut" }} 
                             className="font-medium whitespace-nowrap overflow-hidden text-sm"
                           >
                             {link.label}
