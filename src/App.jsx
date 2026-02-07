@@ -1,11 +1,12 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+// 1. Unified Router Import (Switched to BrowserRouter for clean URLs)
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 // Imports
 import BackgroundAudio from './components/BackgroundAudio';
 import Navbar from './components/Navbar';
-import Background from './components/Background'; // <--- The Unified Engine
+import Background from './components/Background';
 import Home from './pages/Home';
 import Portfolio from './pages/Portfolio';
 import Journal from './pages/Journal';
@@ -15,30 +16,30 @@ import Logo from './components/Logo';
 import ScrollToTop from './components/ScrollToTop';
 import Contact from './pages/Contact';
 import NoiseOverlay from './components/NoiseOverlay';
+import AnalyticsTracker from './components/AnalyticsTracker'; // <--- Kept this
 
 function App() {
   return (
+    // 2. The One Router to Rule Them All
     <Router>
+      
+      {/* 3. Utilities (Must be inside Router to work) */}
+      <AnalyticsTracker />
       <ScrollToTop />
+
+      {/* 4. Persistent World Layers */}
       <Background />
       <NoiseOverlay />
       <BackgroundAudio />
       <Navbar />
-      {/* Removed "bg-black" from here because the Background component 
-         now handles the base layer.
-      */}
+
       <div className="relative min-h-screen selection:bg-blue-500/30 text-white overflow-x-hidden">
         
-        {/* LAYER 0: THE PERSISTENT WORLD */}
-        {/* This sits behind everything and never unmounts */}
-        
-        
-        {/* LAYER 5: BRANDING */}
+        {/* Branding Layer */}
         <Logo />
 
-        {/* LAYER 10: CONTENT */}
+        {/* Content Layer */}
         <div className="relative z-10">
-          {/* mode="wait" ensures the old page fades out before the new one fades in */}
           <AnimatePresence mode="wait">
             <Routes>
               <Route path="/" element={<Home />} />
