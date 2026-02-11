@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Fingerprint, Radio, Zap } from 'lucide-react';
+import CustomCursor from '../components/CustomCursor';
+
+// --- IMPORTS ---
 import PageTransition from '../components/PageTransition';
 import GridFrame from '../components/GridFrame';
 import Quotes from '../components/Quotes';
+// FIX: Capital 'C' to match your folder structure
+import { useAudio } from '../Context/AudioContext'; 
 
 // --- COMPONENT: REALITY LAYERS (THE VISUAL FILTERS) ---
 const RealityLayer = ({ mode }) => {
@@ -18,16 +23,16 @@ const RealityLayer = ({ mode }) => {
              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 1.5 }} 
              className="absolute inset-0 bg-black"
            >
-              {/* Deep Indigo Pulse */}
-              <motion.div 
-                animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.1, 1] }} 
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} 
-                className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#312e81_0%,_#000000_60%)]" 
-              />
-              {/* Tunnel Vision Vignette */}
-              <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.9)] md:shadow-[inset_0_0_300px_rgba(0,0,0,1)]" />
-              {/* Floating Particles */}
-              <div className="absolute inset-0 opacity-30 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+             {/* Deep Indigo Pulse */}
+             <motion.div 
+               animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.1, 1] }} 
+               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} 
+               className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#312e81_0%,_#000000_60%)]" 
+             />
+             {/* Tunnel Vision Vignette */}
+             <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.9)] md:shadow-[inset_0_0_300px_rgba(0,0,0,1)]" />
+             {/* Floating Particles */}
+             <div className="absolute inset-0 opacity-30 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
            </motion.div>
         )}
 
@@ -128,11 +133,29 @@ const PowerSurgeCard = ({ label, value, active }) => {
 
 const Home = () => {
   const navigate = useNavigate();
+  const { setMood } = useAudio(); // <--- AUDIO CONTROLLER
+  
   const [activeMode, setActiveMode] = useState(null);
   const [isNavigating, setIsNavigating] = useState(false);
   
+  // --- RESET LOGIC (The Easter Egg Fix) ---
+  // When leaving Home, reset audio to default
+  useEffect(() => {
+    return () => setMood('default');
+  }, []);
+
+  // --- THE UNIFIED CONTROLLER ---
+  // This function now controls BOTH Visuals AND Audio
   const handleModeClick = (mode) => {
-    setActiveMode(prev => prev === mode ? null : mode);
+    // 1. Determine if we are turning it ON or OFF
+    const newMode = activeMode === mode ? null : mode;
+    
+    // 2. Set Visual State
+    setActiveMode(newMode);
+    
+    // 3. Set Audio State
+    // If turning off (null), go back to 'default' (Chopin)
+    setMood(newMode || 'default');
   };
 
   const { scrollY } = useScroll();
@@ -172,6 +195,7 @@ const Home = () => {
 
   return (
     <PageTransition>
+        <CustomCursor activeMode={activeMode} />
       <GridFrame />
 
       {/* === REALITY LAYER (The Pronounced Effects) === */}
@@ -234,6 +258,7 @@ const Home = () => {
         {/* --- QUOTES SECTION --- */}
         <div className="min-h-screen flex flex-col items-center justify-center px-4 md:px-6 relative z-20">
           <motion.div style={{ opacity: manifestoOpacity, scale: manifestoScale }}>
+             {/* Passed activeMode so quotes can style themselves if needed */}
              <Quotes activeMode={activeMode} /> 
           </motion.div>
         </div>
@@ -256,19 +281,19 @@ const Home = () => {
               
               <p className="text-zinc-400 max-w-2xl text-lg font-light mb-12">
                  In a world drowning in noise, true luxury is clarity. I use my background in 
-                 <button className="text-indigo-400 hover:underline decoration-indigo-500/30 mx-2 font-medium" onClick={() => setActiveMode('cognitive')}>
+                 <button className="text-indigo-400 hover:underline decoration-indigo-500/30 mx-2 font-medium" onClick={() => handleModeClick('cognitive')}>
                    psychology
                  </button> 
                  to build digital environments that respect the user's subconscious.
               </p>
 
-              {/* TOGGLES */}
+              {/* TOGGLES - UPDATED TO USE HANDLEMODECLICK */}
               <div className="flex gap-8 opacity-70">
-                 <button onClick={() => setActiveMode(prev => prev === 'behavioral' ? null : 'behavioral')} className="flex items-center gap-2 group">
+                 <button onClick={() => handleModeClick('behavioral')} className="flex items-center gap-2 group">
                     <Radio size={16} className={`group-hover:text-red-500 transition-colors ${activeMode === 'behavioral' ? 'text-red-500' : 'text-zinc-600'}`} />
                     <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest group-hover:text-white">Behavioral</span>
                  </button>
-                 <button onClick={() => setActiveMode(prev => prev === 'strategy' ? null : 'strategy')} className="flex items-center gap-2 group">
+                 <button onClick={() => handleModeClick('strategy')} className="flex items-center gap-2 group">
                     <Zap size={16} className={`group-hover:text-yellow-200 transition-colors ${activeMode === 'strategy' ? 'text-white fill-white' : 'text-zinc-600'}`} />
                     <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest group-hover:text-white">Strategy</span>
                  </button>
@@ -278,24 +303,24 @@ const Home = () => {
             {/* PART B: IDENTITY GRID */}
             <div className="py-24 px-6 flex flex-col items-center">
                <div className="max-w-5xl w-full grid md:grid-cols-2 gap-16 items-start">
-                  
-                  {/* Bio */}
-                  <div>
-                    <span className="text-emerald-500 font-mono text-xs tracking-[0.2em] mb-2 block">Subject_ID</span>
-                    <h4 className="text-4xl font-serif text-white italic mb-2">Akshat Chauhan</h4>
-                    <span className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-6 block">Experience Architect</span>
-                    <p className="text-zinc-400 leading-relaxed">
-                      "Design is not decoration; it is directed psychology. With a foundation in Cognitive Science, I decode the 'why' behind user actions."
-                    </p>
-                  </div>
+                 
+                 {/* Bio */}
+                 <div>
+                   <span className="text-emerald-500 font-mono text-xs tracking-[0.2em] mb-2 block">Subject_ID</span>
+                   <h4 className="text-4xl font-serif text-white italic mb-2">Akshat Chauhan</h4>
+                   <span className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-6 block">Experience Architect</span>
+                   <p className="text-zinc-400 leading-relaxed">
+                     "Design is not decoration; it is directed psychology. With a foundation in Cognitive Science, I decode the 'why' behind user actions."
+                   </p>
+                 </div>
 
-                  {/* Stats Grid */}
-                  <div className="grid grid-cols-2 gap-4">
-                      <PowerSurgeCard label="Base" value="New Delhi, IN" />
-                      <PowerSurgeCard label="Status" value="Online" active={true} />
-                      <PowerSurgeCard label="Engine" value="React + Framer" />
-                      <PowerSurgeCard label="Core" value="Stoic Philosophy" />
-                  </div>
+                 {/* Stats Grid */}
+                 <div className="grid grid-cols-2 gap-4">
+                     <PowerSurgeCard label="Base" value="New Delhi, IN" />
+                     <PowerSurgeCard label="Status" value="Online" active={true} />
+                     <PowerSurgeCard label="Engine" value="React + Framer" />
+                     <PowerSurgeCard label="Core" value="Stoic Philosophy" />
+                 </div>
                </div>
 
                {/* FINAL CTA */}

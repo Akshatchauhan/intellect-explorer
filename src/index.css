@@ -19,3 +19,16 @@ body {
   width: 0px;
   background: transparent;
 }
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none; /* Optional: Makes images completely "ghost-like" (clicks pass through) */
+}
+
+/* If you have buttons or links that are images, you might want to re-enable pointer-events for them specifically:
+   a img, button img { pointer-events: auto; } 
+*/

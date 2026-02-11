@@ -1,98 +1,161 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Activity } from 'lucide-react';
+import { useAudio } from '../Context/AudioContext'; 
+
+// --- CONFIGURATION ---
+const TRACKS = {
+  default:    "/audio/theme-default.mp3",    
+  cognitive:  "/audio/theme-cognitive.mp3",  
+  behavioral: "/audio/theme-behavioral.mp3", 
+  interface:  "/audio/theme-interface.mp3",  
+  strategy:   "/audio/theme-strategy.mp3",   
+};
+
+// --- THEME STYLING ---
+const THEME_STYLES = {
+  default: {
+    border: "border-emerald-500/50",
+    bg: "bg-emerald-500/10",
+    icon: "text-emerald-400",
+    glow: "border-emerald-500/30"
+  },
+  cognitive: {
+    border: "border-indigo-500/50",
+    bg: "bg-indigo-500/10",
+    icon: "text-indigo-400",
+    glow: "border-indigo-500/30"
+  },
+  behavioral: {
+    border: "border-red-500/50",
+    bg: "bg-red-500/10",
+    icon: "text-red-500",
+    glow: "border-red-500/30"
+  },
+  interface: {
+    border: "border-emerald-400/50", 
+    bg: "bg-emerald-400/10",
+    icon: "text-emerald-400",
+    glow: "border-emerald-400/30"
+  },
+  strategy: {
+    border: "border-white/20",
+    bg: "bg-white/10",
+    icon: "text-white",
+    glow: "border-white/30"
+  }
+};
 
 const BackgroundAudio = () => {
-  const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const { currentMood, isMuted, setIsMuted } = useAudio();
+  
+  const audioRefA = useRef(null);
+  const audioRefB = useRef(null);
+  const activeTrackRef = useRef('A'); 
+  
+  // FIX: Track persistence so music doesn't reset to 0:00
+  const trackTimers = useRef({}); 
+  const prevMoodRef = useRef('default');
+
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
+  // Get current style
+  const activeStyle = THEME_STYLES[currentMood] || THEME_STYLES.default;
+
+  // --- 1. GHOST TRIGGER ---
   useEffect(() => {
-    const audio = audioRef.current;
-    
-    // THE "GHOST" STARTER
     const attemptPlay = () => {
-      if (audio && !hasInteracted) {
-        // 1. Set volume low for a "Soft Entry"
-        audio.volume = 0.05; 
-        
-        // 2. Try to play
-        audio.play()
-          .then(() => {
-            setIsPlaying(true);
-            setHasInteracted(true);
-            
-            // 3. Fade In smoothly to 50% volume
-            let vol = 0.05;
-            const fadeInterval = setInterval(() => {
-              if (vol < 0.5) {
-                vol += 0.02; // Slow fade
-                audio.volume = vol;
-              } else {
-                clearInterval(fadeInterval);
-              }
-            }, 100);
-            
-            // Clean up listeners since we are playing now
-            removeListeners();
-          })
-          .catch((error) => {
-            // Auto-play was blocked. We wait for interaction.
-            console.log("Autoplay waiting for interaction...");
-          });
+      if (hasInteracted) return;
+
+      const activeAudio = activeTrackRef.current === 'A' ? audioRefA.current : audioRefB.current;
+      if (!activeAudio.src) activeAudio.src = TRACKS[currentMood] || TRACKS.default;
+
+      activeAudio.volume = 0.5;
+      activeAudio.play()
+        .then(() => {
+          setHasInteracted(true);
+          setIsMuted(false);
+        })
+        .catch(() => console.log("Waiting for interaction..."));
+    };
+
+    ['click', 'scroll', 'keydown', 'touchstart'].forEach(event => 
+      window.addEventListener(event, attemptPlay, { once: true })
+    );
+  }, []);
+
+  // --- 2. MOOD & MUTE LOGIC (With Time Persistence) ---
+  useEffect(() => {
+    if (!hasInteracted) return;
+
+    const newSrc = TRACKS[currentMood] || TRACKS.default;
+    const incoming = activeTrackRef.current === 'A' ? audioRefB.current : audioRefA.current;
+    const outgoing = activeTrackRef.current === 'A' ? audioRefA.current : audioRefB.current;
+
+    // A. SAVE TIME of the outgoing track
+    if (outgoing.src && prevMoodRef.current) {
+        trackTimers.current[prevMoodRef.current] = outgoing.currentTime;
+    }
+    prevMoodRef.current = currentMood; // Update history
+
+    // B. PREPARE INCOMING track
+    const fullPath = window.location.origin + newSrc;
+    if (incoming.src !== fullPath && !incoming.src.endsWith(newSrc)) {
+       incoming.src = newSrc;
+       // FIX: RESTORE TIME
+       incoming.currentTime = trackTimers.current[currentMood] || 0;
+    }
+
+    // C. HANDLE MUTE
+    if (isMuted) {
+      outgoing.pause();
+      incoming.pause();
+      // Ensure we still track time even if paused
+      trackTimers.current[currentMood] = incoming.currentTime;
+      return;
+    }
+
+    // D. PLAY & CROSSFADE
+    incoming.volume = 0;
+    incoming.play().catch(e => console.error("Play error:", e));
+
+    let steps = 0;
+    const fade = setInterval(() => {
+      steps++;
+      const progress = steps / 20;
+      incoming.volume = progress * 0.5;
+      outgoing.volume = Math.max(0, (1 - progress) * 0.5);
+
+      if (steps >= 20) {
+        clearInterval(fade);
+        outgoing.pause();
+        activeTrackRef.current = activeTrackRef.current === 'A' ? 'B' : 'A';
       }
-    };
+    }, 100);
 
-    const removeListeners = () => {
-      window.removeEventListener('click', attemptPlay);
-      window.removeEventListener('keydown', attemptPlay);
-      window.removeEventListener('scroll', attemptPlay);
-      window.removeEventListener('touchstart', attemptPlay);
-    };
+    return () => clearInterval(fade);
+  }, [currentMood, isMuted, hasInteracted]);
 
-    // 1. Try immediately (Works if user has visited before)
-    attemptPlay();
-
-    // 2. If blocked, attach listeners to EVERYTHING
-    // The moment they touch the site, music starts.
-    window.addEventListener('click', attemptPlay);
-    window.addEventListener('keydown', attemptPlay);
-    window.addEventListener('scroll', attemptPlay);
-    window.addEventListener('touchstart', attemptPlay);
-
-    return () => {
-      removeListeners();
-    };
-  }, [hasInteracted]);
-
-  const toggleAudio = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+  // --- 3. UI TOGGLE ---
+  const handleToggle = (e) => {
+    e.stopPropagation();
+    if (!hasInteracted) {
+      setHasInteracted(true);
+      setIsMuted(false);
     } else {
-      audioRef.current.play();
-      setIsPlaying(true);
+      setIsMuted(!isMuted);
     }
   };
 
   return (
     <>
-      <audio 
-        ref={audioRef} 
-        loop 
-        src="/ambience.mp3" 
-        preload="auto"
-      />
+      <audio ref={audioRefA} loop preload="auto" />
+      <audio ref={audioRefB} loop preload="auto" />
 
       <motion.button
-        // --- UPDATED POSITIONING CLASSES ---
-        // Mobile: bottom-24 (clear navbar), right-4 (tight to edge)
-        // Desktop (md): bottom-8, right-8 (original spot)
-        // Z-Index: z-[100] (force above everything)
-        className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-[100] flex items-center gap-3 group"
-        
-        onClick={toggleAudio}
+        className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-[9999] flex items-center gap-3 group cursor-pointer"
+        onClick={handleToggle}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         initial={{ opacity: 0 }}
@@ -105,26 +168,29 @@ const BackgroundAudio = () => {
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 10 }}
-              className="text-xs font-mono tracking-widest text-zinc-500 uppercase hidden md:block" // Hide text on mobile to save space
+              className="text-xs font-mono tracking-widest text-zinc-500 uppercase hidden md:block"
             >
-              {isPlaying ? 'Now Playing' : 'Muted'}
+              {isMuted ? 'System Muted' : 'Audio Active'}
             </motion.span>
           )}
         </AnimatePresence>
 
         <div className={`
           relative flex items-center justify-center w-10 h-10 rounded-full 
-          border border-white/10 backdrop-blur-md transition-all duration-500
-          ${isPlaying ? 'bg-white/5 border-white/20' : 'bg-transparent'}
+          border backdrop-blur-md transition-all duration-500
+          ${!isMuted 
+             ? `${activeStyle.bg} ${activeStyle.border}` 
+             : 'bg-zinc-900/50 border-white/10'
+           }
         `}>
-          {isPlaying ? (
-            <Volume2 size={16} className="text-zinc-200" />
+          {!isMuted ? (
+            <Activity size={16} className={`${activeStyle.icon} animate-pulse transition-colors duration-500`} />
           ) : (
-            <VolumeX size={16} className="text-zinc-600 group-hover:text-zinc-400 transition-colors" />
+            <VolumeX size={16} className="text-zinc-500" />
           )}
 
-          {isPlaying && (
-            <span className="absolute inset-0 rounded-full border border-white/10 animate-ping opacity-20" />
+          {!isMuted && (
+            <span className={`absolute inset-0 rounded-full border ${activeStyle.glow} animate-ping opacity-20 transition-colors duration-500`} />
           )}
         </div>
       </motion.button>
