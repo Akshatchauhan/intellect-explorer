@@ -27,7 +27,8 @@ function App() {
       {/* 3. Utilities (Must be inside Router to work) */}
       <AnalyticsTracker />
       <ScrollToTop />
-<Helmet>
+      
+      <Helmet>
         {/* 1. The Standard Identity */}
         <title>Intellect Explorer | Akshat Chauhan</title>
         <meta name="description" content="The digital portfolio and psychological journal of Akshat Chauhan. Exploring the intersection of UX design, cognitive science, and human behavior." />
@@ -44,6 +45,7 @@ function App() {
         {/* 3. Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
+      
       {/* 4. Persistent World Layers */}
       <Background />
       <NoiseOverlay />

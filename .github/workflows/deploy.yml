@@ -33,7 +33,7 @@ jobs:
         with:
           server: ftp.intellectexplorer.com
           username: icanandiwillsoon2@intellectexplorer.com
-          password: Alasyoyo@12
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /
           dangerously-force-clean: true

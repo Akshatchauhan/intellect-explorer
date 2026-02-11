@@ -46,7 +46,7 @@ const Contact = () => {
                         <span className="hidden md:inline text-zinc-800">|</span>
                         <span>Classified 2026</span>
                         <span className="hidden md:inline text-zinc-800">|</span>
-                        <span className="text-emerald-500/80">Available</span>
+                        <span className="text-red-500/80">Unavailable</span>
                     </div>
                     </div>
                 </div>
