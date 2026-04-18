@@ -2,14 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
 
 const CustomCursor = ({ activeMode }) => {
-  // 1. RAW MOTION VALUES (Instant tracking, no lag)
+  // 1. RAW MOTION VALUES
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   
   const [isHovering, setIsHovering] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // 1.5. DETECT MOBILE/TOUCH DEVICES
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsTouchDevice(window.innerWidth < 768 || window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+    };
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
+  }, []);
 
   // 2. TRACK MOUSE
   useEffect(() => {
+    // Completely skip event listeners if on a mobile/touch device
+    if (isTouchDevice) return;
+
     const moveCursor = (e) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -30,9 +44,9 @@ const CustomCursor = ({ activeMode }) => {
       window.removeEventListener('mousemove', moveCursor);
       window.removeEventListener('mouseover', handleMouseOver);
     };
-  }, []);
+  }, [isTouchDevice, cursorX, cursorY]);
 
-  // 3. DEFINE VARIANTS (With encapsulated transitions)
+  // 3. DEFINE VARIANTS
   const variants = {
     default: {
       height: 32,
@@ -59,17 +73,14 @@ const CustomCursor = ({ activeMode }) => {
     behavioral: {
       height: 32,
       width: 32,
-      // Jitter Animation relative to center
       x: ["-50%", "-54%", "-46%", "-50%"], 
       y: ["-50%", "-52%", "-48%", "-50%"],
       backgroundColor: "transparent",
-      border: "2px solid rgba(239, 68, 68, 1)", // Red
-      borderRadius: "0%", // Square
+      border: "2px solid rgba(239, 68, 68, 1)", 
+      borderRadius: "0%", 
       transition: { 
-        // Specific transition for the jitter loop
         x: { repeat: Infinity, duration: 0.1, ease: "linear" },
         y: { repeat: Infinity, duration: 0.1, ease: "linear" },
-        // Spring for the shape morph
         default: { type: "spring", stiffness: 400, damping: 25 }
       }
     },
@@ -78,7 +89,7 @@ const CustomCursor = ({ activeMode }) => {
       width: 4,
       x: "-50%",
       y: "-50%",
-      backgroundColor: "#34d399", // Emerald
+      backgroundColor: "#34d399", 
       border: "none",
       borderRadius: 0,
       transition: { type: "spring", stiffness: 500, damping: 30 }
@@ -97,7 +108,6 @@ const CustomCursor = ({ activeMode }) => {
 
   const currentVariant = variants[activeMode] || variants.default;
 
-  // Hover state overrides (Calculated dynamically to preserve transition logic)
   const finalVariant = isHovering ? {
     ...currentVariant,
     scale: 1.5,
@@ -105,22 +115,30 @@ const CustomCursor = ({ activeMode }) => {
     mixBlendMode: "normal"
   } : currentVariant;
 
+  // 4. EARLY RETURN FOR MOBILE/TOUCH
+  if (isTouchDevice) {
+    return null;
+  }
+
   return (
     <>
+      {/* GLOBAL CSS: Only hide cursor on devices that HAVE a mouse (hover supported) */}
       <style>{`
-        body, a, button, .cursor-pointer { cursor: none !important; }
+        @media (hover: hover) and (pointer: fine) {
+          body, a, button, .cursor-pointer { cursor: none !important; }
+        }
       `}</style>
 
+      {/* THE CURSOR: Hidden on mobile (default), Flex on Desktop (md:flex) */}
       <motion.div
-        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full flex items-center justify-center"
+        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full hidden md:flex items-center justify-center"
         style={{
           left: cursorX,
           top: cursorY,
         }}
-        // We pass the entire variant object, which now contains the specific transition for that mode
         animate={finalVariant}
       >
-        {/* INNER DOT (Hidden for Interface/Text mode) */}
+        {/* INNER DOT */}
         {activeMode !== 'interface' && (
            <div className={`w-1 h-1 rounded-full ${activeMode === 'behavioral' ? 'bg-red-500' : 'bg-white'}`} />
         )}
