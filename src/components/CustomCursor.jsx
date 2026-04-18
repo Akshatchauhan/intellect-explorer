@@ -7,12 +7,16 @@ const CustomCursor = ({ activeMode }) => {
   const cursorY = useMotionValue(-100);
   
   const [isHovering, setIsHovering] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  // 1.5. DETECT MOBILE/TOUCH DEVICES
+  // 1.5. ROLLS-ROYCE DETECTION: Synchronous init prevents "flashing" on load
+  const [isTouchDevice, setIsTouchDevice] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  });
+
   useEffect(() => {
     const checkDevice = () => {
-      setIsTouchDevice(window.innerWidth < 768 || window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+      setIsTouchDevice(('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.innerWidth < 768);
     };
     checkDevice();
     window.addEventListener('resize', checkDevice);
@@ -127,11 +131,15 @@ const CustomCursor = ({ activeMode }) => {
         @media (hover: hover) and (pointer: fine) {
           body, a, button, .cursor-pointer { cursor: none !important; }
         }
+        /* FAILSAFE: Guarantee it never displays if a coarse pointer (touch) is primary */
+        @media (hover: none) and (pointer: coarse) {
+          .custom-cursor-container { display: none !important; }
+        }
       `}</style>
 
       {/* THE CURSOR: Hidden on mobile (default), Flex on Desktop (md:flex) */}
       <motion.div
-        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full hidden md:flex items-center justify-center"
+        className="custom-cursor-container fixed top-0 left-0 z-[99999] pointer-events-none rounded-full hidden md:flex items-center justify-center will-change-transform"
         style={{
           left: cursorX,
           top: cursorY,
