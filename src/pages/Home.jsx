@@ -300,7 +300,7 @@ const Home = () => {
         </section>
 
         {/* --- SECTION 4: IDENTITY --- */}
-        <section className="h-screen w-full flex flex-col items-center justify-center px-4 md:px-6 snap-start">
+        <section className="h-screen w-full flex flex-col items-center justify-center px-4 md:px-6 snap-start pb-24 md:pb-0">
           <motion.div
             variants={sectionVariants}
             initial="hidden"
