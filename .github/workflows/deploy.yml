@@ -9,6 +9,8 @@ jobs:
   web-deploy:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       # 1. Get the latest code
       - name: 🚚 Get latest code
