@@ -150,8 +150,8 @@ const BackgroundAudio = () => {
 
   return (
     <>
-      <audio ref={audioRefA} loop preload="auto" />
-      <audio ref={audioRefB} loop preload="auto" />
+      <audio ref={audioRefA} loop preload="metadata" />
+      <audio ref={audioRefB} loop preload="metadata" />
 
       <motion.button
         className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-[9999] flex items-center gap-3 group cursor-pointer"

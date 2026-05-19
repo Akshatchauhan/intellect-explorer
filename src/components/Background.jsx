@@ -1,136 +1,151 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
-const Background = () => {
-  const location = useLocation();
-  const path = location.pathname;
-  const isHome = path === '/';
-  
-  // SUPER WIDE MODE: 
-  // We expand the container to 200% of the screen for non-home pages.
-  // This pushes the edges of the gradient WAY off-screen.
-  const isWide = path.includes('/portfolio') || path.includes('/journal') || path.includes('/contact');
+const GRAIN = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`;
 
-  // --- CONFIG: THE ATMOSPHERE ---
-  const beamConfig = useMemo(() => {
-    // 1. Portfolio: "The Left Pillar"
-    if (path.includes('/portfolio')) return { 
-        x: '-10%', // Closer to center since container is huge
-        rotate: -20, 
-        opacity: 0.75, 
-        scaleX: 4 // MASSIVE scale (was 2.5) - Soft, infinite edges
-    };
-    
-    // 2. Journal: "The Right Pillar"
-    if (path.includes('/journal'))   return { 
-        x: '10%', 
-        rotate: 20, 
-        opacity: 0.75, 
-        scaleX: 4 
-    };
-    
-    // 3. Contact: "The Void"
-    if (path.includes('/contact'))   return { 
-        x: '0%', 
-        rotate: 0, 
-        opacity: 0.4, 
-        scaleX: 5 // Enormous ambient wash
-    };
-    
-    // Default
-    return { x: '0%', rotate: 0, opacity: 0, scaleX: 1 };
-  }, [path]);
+// Jewel tone palette — saturated but very dark, like silk in dim light
+const SAPPHIRE = 'rgba(18, 42, 128, 0.90)';   // midnight blue
+const GARNET   = 'rgba(128, 16, 42, 0.85)';   // deep burgundy-red
+const GOLD     = 'rgba(138, 92, 14, 0.80)';   // dark amber
+const VIOLET   = 'rgba(78, 18, 118, 0.80)';   // deep purple
+
+const fadeProps = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit:    { opacity: 0 },
+  transition: { duration: 1.5 },
+};
+
+// A single jewel-toned orb
+const Orb = ({ color, style, animate: anim, transition, blur = 80 }) => (
+  <motion.div
+    className="absolute rounded-full will-change-transform"
+    style={{
+      background: `radial-gradient(ellipse, ${color} 0%, transparent 68%)`,
+      filter: `blur(${blur}px)`,
+      ...style,
+    }}
+    animate={anim}
+    transition={transition}
+  />
+);
+
+const Background = () => {
+  const { pathname: path } = useLocation();
+  // Halve blur on mobile — blur(80px) on a ~270px orb spreads colour too
+  // thin to see. Also used to gate the iOS Safari GPU-layer fix below.
+  const blur = window.innerWidth < 768 ? 40 : 80;
 
   return (
-    <div 
-      className={`fixed pointer-events-none z-[-1] bg-zinc-900 overflow-hidden transition-colors duration-1000 
-      ${isWide ? '-inset-[50%] w-[200%] h-[200%]' : 'inset-0 w-full h-full'}`}
+    // translateZ(0) forces a GPU compositing layer — without it iOS Safari
+    // silently drops filter:blur() on children of fixed elements.
+    <div
+      className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden"
+      style={{ backgroundColor: '#08070e', transform: 'translateZ(0)' }}
     >
-      
-      {/* 1. GRAIN (Texture) */}
-      <div 
-        className="absolute inset-0 opacity-[0.12] mix-blend-overlay z-40"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
-        }}
+
+      {/* GRAIN — gives the field micro-texture, like fabric weave */}
+      <div
+        className="absolute inset-0 opacity-[0.18] mix-blend-overlay z-40"
+        style={{ backgroundImage: GRAIN }}
       />
 
-      {/* 2. THE LIGHT SYSTEM */}
       <AnimatePresence mode="wait">
-        
-        {/* === A. HOME: THE CATHEDRAL (Standard View) === */}
-        {isHome ? (
-          <motion.div
-            key="cathedral"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1 }}
-            className="absolute inset-0"
-          >
-              <motion.div 
-                animate={{ 
-                  opacity: [0.6, 0.9, 0.6], 
-                  x: [-20, 20, -20],
-                  rotate: [-30, -25, -30]
-                }}
-                transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[-50%] left-[10%] w-[500px] h-[200%] bg-gradient-to-r from-transparent via-white/20 to-transparent blur-[50px] transform -rotate-[30deg] will-change-transform" 
-              />
 
-              <motion.div 
-                animate={{ 
-                  opacity: [0.3, 0.5, 0.3],
-                  x: [0, -40, 0],
-                }}
-                transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                className="absolute top-[-50%] right-[20%] w-[350px] h-[200%] bg-gradient-to-r from-transparent via-white/10 to-transparent blur-[70px] transform -rotate-[40deg] will-change-transform" 
-              />
+        {/* HOME: all four tones, balanced — like light catching silk at rest */}
+        {path === '/' && (
+          <motion.div key="home" {...fadeProps} className="absolute inset-0">
+            <Orb blur={blur} color={SAPPHIRE}
+              style={{ width: '72vw', height: '72vw', top: '-25%', left: '-15%' }}
+              animate={{ x: [-25, 20, -25], y: [-15, 20, -15] }}
+              transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <Orb blur={blur} color={GARNET}
+              style={{ width: '65vw', height: '65vw', bottom: '-25%', right: '-15%' }}
+              animate={{ x: [20, -25, 20], y: [15, -20, 15] }}
+              transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+            />
+            <Orb blur={blur} color={GOLD}
+              style={{ width: '55vw', height: '55vw', top: '20%', right: '-10%' }}
+              animate={{ x: [10, -20, 10], y: [-10, 15, -10] }}
+              transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 6 }}
+            />
+            <Orb blur={blur} color={VIOLET}
+              style={{ width: '50vw', height: '50vw', bottom: '-10%', left: '10%' }}
+              animate={{ x: [-15, 15, -15], y: [10, -15, 10] }}
+              transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+            />
           </motion.div>
-        ) : (
-          
-        /* === B. OTHERS: THE INFINITE VIGIL === */
-          <motion.div
-            key="vigil"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5 }}
-            className="absolute inset-0 flex justify-center items-center"
-          >
-            {/* The Beam Itself - Scaled up massively by beamConfig */}
-            <motion.div 
-              initial={false}
-              animate={beamConfig}
-              transition={{ duration: 2, ease: "easeInOut" }}
-              className="absolute top-[-50%] h-[200%] w-[100%] will-change-transform"
-            >
-              <div 
-                className="w-full h-full bg-gradient-to-b from-transparent via-white/15 to-transparent blur-[150px]" // Increased Blur
-                style={{ clipPath: 'polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)' }} 
-              />
-            </motion.div>
+        )}
 
-            {/* Background Ambience Pulse */}
-            <motion.div 
-               animate={{ opacity: [0.4, 0.6, 0.4] }}
-               transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-               className="absolute inset-0 bg-radial-gradient from-white/10 to-transparent blur-3xl"
+        {/* PORTFOLIO: sapphire-dominant — intellectual, deep water */}
+        {path.includes('/portfolio') && (
+          <motion.div key="portfolio" {...fadeProps} className="absolute inset-0">
+            <Orb blur={blur} color={SAPPHIRE}
+              style={{ width: '85vw', height: '85vw', top: '-30%', left: '-20%' }}
+              animate={{ x: [-20, 18, -20], y: [-10, 18, -10] }}
+              transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <Orb blur={blur} color={VIOLET}
+              style={{ width: '60vw', height: '60vw', bottom: '-20%', right: '-10%' }}
+              animate={{ x: [12, -18, 12], y: [8, -14, 8] }}
+              transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+            />
+            <Orb blur={blur} color={GARNET}
+              style={{ width: '40vw', height: '40vw', top: '30%', right: '5%', opacity: 0.4 }}
+              animate={{ x: [-8, 12, -8] }}
+              transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+            />
+          </motion.div>
+        )}
+
+        {/* JOURNAL: garnet-dominant — personal, like dark velvet or wine */}
+        {path.includes('/journal') && (
+          <motion.div key="journal" {...fadeProps} className="absolute inset-0">
+            <Orb blur={blur} color={GARNET}
+              style={{ width: '80vw', height: '80vw', top: '-25%', right: '-20%' }}
+              animate={{ x: [18, -20, 18], y: [-10, 18, -10] }}
+              transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <Orb blur={blur} color={GOLD}
+              style={{ width: '58vw', height: '58vw', bottom: '-20%', left: '-10%' }}
+              animate={{ x: [-14, 16, -14], y: [8, -12, 8] }}
+              transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+            />
+            <Orb blur={blur} color={VIOLET}
+              style={{ width: '42vw', height: '42vw', top: '25%', left: '5%', opacity: 0.45 }}
+              animate={{ y: [-8, 12, -8] }}
+              transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 5 }}
+            />
+          </motion.div>
+        )}
+
+        {/* CONTACT: gold-dominant — warm, the light at the end of the hall */}
+        {path.includes('/contact') && (
+          <motion.div key="contact" {...fadeProps} className="absolute inset-0">
+            <Orb blur={blur} color={GOLD}
+              style={{ width: '78vw', height: '78vw', top: '-20%', left: '10%' }}
+              animate={{ x: [-15, 15, -15], y: [-10, 14, -10] }}
+              transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <Orb blur={blur} color={GARNET}
+              style={{ width: '55vw', height: '55vw', bottom: '-20%', right: '-5%' }}
+              animate={{ x: [10, -15, 10], y: [8, -12, 8] }}
+              transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
+            />
+            <Orb blur={blur} color={SAPPHIRE}
+              style={{ width: '40vw', height: '40vw', bottom: '10%', left: '-5%', opacity: 0.40 }}
+              animate={{ x: [-10, 10, -10] }}
+              transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
             />
           </motion.div>
         )}
 
       </AnimatePresence>
 
-      {/* 3. REFLECTIVE FLOOR */}
-      <div className="absolute bottom-[-10%] left-0 right-0 h-[60vh] bg-gradient-to-t from-zinc-800/80 to-transparent blur-[80px] opacity-80" />
-
-      {/* 4. VIGNETTE */}
-      <div className="absolute inset-0 bg-radial-gradient from-transparent via-zinc-950/20 to-zinc-950 opacity-60 z-30 pointer-events-none" />
-
-      {/* 5. GLOBAL BLUR LAYER */}
-      <div className="absolute inset-0 backdrop-blur-[2px] z-50 pointer-events-none" />
+      {/* VIGNETTE */}
+      <div className="absolute inset-0 bg-radial-gradient from-transparent via-zinc-950/20 to-zinc-950 opacity-70 z-30 pointer-events-none" />
 
     </div>
   );

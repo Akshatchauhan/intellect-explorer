@@ -6,12 +6,19 @@ export default {
   ],
   theme: {
     extend: {
-      // Your existing custom colors
       colors: {
         glass: "rgba(255, 255, 255, 0.05)",
         "glass-border": "rgba(255, 255, 255, 0.1)",
       },
-      // NEW: The Typography Clash Setup
+      keyframes: {
+        scan: {
+          '0%':   { top: '0%' },
+          '100%': { top: '100%' },
+        },
+      },
+      animation: {
+        scan: 'scan 1.5s ease-in-out infinite',
+      },
       fontFamily: {
         // The "Empire" Font (Luxury, Headers)
         serif: ['"Playfair Display"', 'serif'],

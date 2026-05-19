@@ -68,23 +68,23 @@ const Portfolio = () => {
 
           {/* TABS (Glass Filter) */}
           <div className="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0">
-             <div className="inline-flex items-center p-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+             <div className="inline-flex items-center gap-1">
                 {[
-                  { id: 'SYSTEMS', icon: <Layers size={12} /> }, 
+                  { id: 'SYSTEMS', icon: <Layers size={12} /> },
                   { id: 'LAB', icon: <Beaker size={12} /> }
                 ].map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`relative px-6 py-2 rounded-full text-[10px] md:text-xs font-mono tracking-widest uppercase transition-colors duration-300 flex items-center gap-2 flex-shrink-0 ${
-                      activeTab === tab.id ? 'text-black' : 'text-zinc-500 hover:text-zinc-300'
+                    className={`relative px-5 py-2 rounded-sm text-[10px] md:text-xs font-mono tracking-widest uppercase transition-colors duration-300 flex items-center gap-2 flex-shrink-0 ${
+                      activeTab === tab.id ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
                     }`}
                   >
                     {activeTab === tab.id && (
-                      <motion.div 
+                      <motion.div
                         layoutId="activeTab"
-                        className="absolute inset-0 bg-white rounded-full"
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                        className="absolute inset-0 rounded-sm bg-white/[0.04] border border-white/20"
+                        transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
                       />
                     )}
                     <span className="relative z-10 flex items-center gap-2">

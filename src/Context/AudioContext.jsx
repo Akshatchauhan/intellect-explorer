@@ -1,41 +1,53 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback, useMemo } from 'react';
 
-const AudioContext = createContext({
+// Two contexts so consumers only subscribe to what they need:
+// - useAudioState()   → reads currentMood / isMuted / volume (re-renders on value change)
+// - useAudioActions() → gets stable setter refs (never re-renders due to state change)
+// - useAudio()        → backward-compat: combines both (safe to use anywhere)
+
+const AudioStateContext = createContext({
   currentMood: 'default',
-  setMood: () => {},
-  volume: 0.5,
-  setVolume: () => {},
   isMuted: true,
-  setIsMuted: () => {}
+  volume: 0.5,
 });
 
-export const useAudio = () => useContext(AudioContext);
+const AudioActionsContext = createContext({
+  setMood: () => {},
+  setIsMuted: () => {},
+  setVolume: () => {},
+});
+
+export const useAudioState   = () => useContext(AudioStateContext);
+export const useAudioActions = () => useContext(AudioActionsContext);
+export const useAudio        = () => ({ ...useAudioState(), ...useAudioActions() });
 
 export const AudioProvider = ({ children }) => {
-  // The "Mood" of the site. 
-  // Options: 'default', 'cognitive', 'behavioral', 'interface', 'strategy'
   const [currentMood, setCurrentMood] = useState('default');
-  
-  // Volume Control (0.0 to 1.0)
-  const [volume, setVolume] = useState(0.5);
+  const [volume,      setVolume]      = useState(0.5);
+  const [isMuted,     setIsMuted]     = useState(true);
 
-  // Global Mute Toggle
-  const [isMuted, setIsMuted] = useState(true); // Start muted (browser policy)
+  // Stable action refs — created once, never recreated
+  const setMood      = useCallback((mood) => setCurrentMood(mood || 'default'), []);
+  const setIsMutedCb = useCallback((v) => setIsMuted(v), []);
+  const setVolumeCb  = useCallback((v) => setVolume(v), []);
 
-  const setMood = (mood) => {
-    setCurrentMood(mood || 'default');
-  };
+  // State object only changes when values change
+  const state   = useMemo(
+    () => ({ currentMood, isMuted, volume }),
+    [currentMood, isMuted, volume]
+  );
+
+  // Actions object is permanently stable (callbacks never change)
+  const actions = useMemo(
+    () => ({ setMood, setIsMuted: setIsMutedCb, setVolume: setVolumeCb }),
+    [setMood, setIsMutedCb, setVolumeCb]
+  );
 
   return (
-    <AudioContext.Provider value={{ 
-      currentMood, 
-      setMood, 
-      volume, 
-      setVolume, 
-      isMuted, 
-      setIsMuted 
-    }}>
-      {children}
-    </AudioContext.Provider>
+    <AudioStateContext.Provider value={state}>
+      <AudioActionsContext.Provider value={actions}>
+        {children}
+      </AudioActionsContext.Provider>
+    </AudioStateContext.Provider>
   );
 };
