@@ -27,26 +27,17 @@ jobs:
           npm install --legacy-peer-deps
           npm run build
 
-      # 4. Test FTP connectivity before attempting deploy
-      - name: 🔍 Test connectivity
-        run: |
-          echo "Testing port 21 (FTP)..."
-          nc -zv -w 10 ftp.intellectexplorer.com 21 && echo "✅ Port 21 reachable" || echo "❌ Port 21 blocked"
-          echo "Testing port 22 (SFTP/SSH)..."
-          nc -zv -w 10 ftp.intellectexplorer.com 22 && echo "✅ Port 22 reachable" || echo "❌ Port 22 blocked"
-          echo "Testing port 2222 (alt SFTP)..."
-          nc -zv -w 10 ftp.intellectexplorer.com 2222 && echo "✅ Port 2222 reachable" || echo "❌ Port 2222 blocked"
+      # 4. Copy cPanel deploy config into dist so it ends up in the deploy branch
+      - name: ➕ Add cPanel config
+        run: cp .cpanel.yml dist/.cpanel.yml
 
-      # 5. Upload to Hostagle via FTP
-      - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      # 5. Push built files to cpanel-deploy branch — cPanel pulls from here
+      - name: 🚀 Push to cpanel-deploy branch
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          server: ftp.intellectexplorer.com
-          username: icanandiwillsoon2@intellectexplorer.com
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/
-          server-dir: /
-          protocol: ftp
-          security: loose
-          timeout: 60000
-          dangerous-clean-slate: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: cpanel-deploy
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
