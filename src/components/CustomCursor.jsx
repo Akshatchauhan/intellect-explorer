@@ -68,6 +68,13 @@ const CustomCursor = () => {
   const cursorY = useMotionValue(-100);
 
   const [isHovering, setIsHovering] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => setResumeOpen(e.detail);
+    window.addEventListener('resume-modal', handler);
+    return () => window.removeEventListener('resume-modal', handler);
+  }, []);
 
   // Lazy initialiser runs once — prevents cursor flash on load
   const [isTouchDevice, setIsTouchDevice] = useState(() => {
@@ -107,7 +114,7 @@ const CustomCursor = () => {
     };
   }, [isTouchDevice, cursorX, cursorY]);
 
-  if (isTouchDevice) return null;
+  if (isTouchDevice || resumeOpen) return null;
 
   const currentVariant = VARIANTS[activeMode] ?? VARIANTS.default;
   const finalVariant = isHovering
