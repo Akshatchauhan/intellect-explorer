@@ -1,0 +1,1 @@
+import{w as t,x as i}from"./index-DlZPEZqp.js";const s=({children:a})=>t.jsx(i.div,{initial:{opacity:0},animate:{opacity:1},exit:{opacity:0},transition:{duration:.4,delay:.3,ease:"easeInOut"},className:"w-full",children:a});export{s as P};
