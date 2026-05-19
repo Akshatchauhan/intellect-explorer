@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'dist/**'
 
 jobs:
   web-deploy:
@@ -12,34 +14,26 @@ jobs:
     permissions:
       contents: write
     steps:
-      # 1. Get the latest code
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 2. Install Node.js
       - name: 🟢 Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      # 3. Install Dependencies & Build
       - name: 🔨 Build Project
         run: |
           npm install --legacy-peer-deps
           npm run build
 
-      # 4. Copy cPanel deploy config into dist so it ends up in the deploy branch
-      - name: ➕ Add cPanel config
-        run: cp .cpanel.yml dist/.cpanel.yml
-
-      # 5. Push built files to cpanel-deploy branch — cPanel pulls from here
-      - name: 🚀 Push to cpanel-deploy branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: cpanel-deploy
-          force_orphan: true
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: 🚀 Commit built files to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist/ -f
+          git diff --staged --quiet || git commit -m "chore: update dist build"
+          git push origin main

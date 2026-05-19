@@ -2,5 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/bhysgltw/public_html
-    - /bin/cp -R * "$DEPLOYPATH/"
-    - /bin/rm -f "$DEPLOYPATH/.cpanel.yml"
+    - /bin/cp -R dist/* "$DEPLOYPATH/"
