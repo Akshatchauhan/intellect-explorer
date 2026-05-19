@@ -27,7 +27,17 @@ jobs:
           npm install --legacy-peer-deps
           npm run build
 
-      # 4. Upload to Hostagle via FTP
+      # 4. Test FTP connectivity before attempting deploy
+      - name: 🔍 Test FTP connectivity
+        run: |
+          echo "Testing port 21..."
+          nc -zv -w 10 ftp.intellectexplorer.com 21 && echo "✅ Port 21 reachable" || echo "❌ Port 21 blocked"
+          echo "Testing port 990 (FTPS)..."
+          nc -zv -w 10 ftp.intellectexplorer.com 990 && echo "✅ Port 990 reachable" || echo "❌ Port 990 blocked"
+          echo "DNS lookup:"
+          nslookup ftp.intellectexplorer.com
+
+      # 5. Upload to Hostagle via FTP
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
