@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Subtle jewel-tone glow matching the site's sapphire orb -->
+    <radialGradient id="glow" cx="50%" cy="42%" r="58%">
+      <stop offset="0%"   stop-color="#1e3a8a" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#08070e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="#08070e"/>
+  <!-- Jewel glow -->
+  <rect width="512" height="512" rx="112" fill="url(#glow)"/>
+  <!-- Hairline border -->
+  <rect width="512" height="512" rx="112" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.5"/>
+
+  <!-- I — italic serif, white, dominant -->
+  <text
+    x="176" y="264"
+    font-family="Georgia, 'Times New Roman', Times, serif"
+    font-size="300"
+    font-style="italic"
+    font-weight="400"
+    fill="#ffffff"
+    text-anchor="middle"
+    dominant-baseline="central"
+  >I</text>
+
+  <!-- E — upright, zinc, secondary -->
+  <text
+    x="352" y="264"
+    font-family="Georgia, 'Times New Roman', Times, serif"
+    font-size="272"
+    font-style="normal"
+    font-weight="400"
+    fill="#71717a"
+    text-anchor="middle"
+    dominant-baseline="central"
+  >E</text>
+</svg>
