@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\aksha\\\\intellect-explorer\" -Recurse -Include *.json, *.config.*)",
+      "Bash(Select-Object FullName)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\aksha\\\\intellect-explorer\\\\public\" -Recurse)",
+      "Bash(Select-Object FullName, Length)",
+      "Bash(npm list *)"
+    ]
+  }
+}
