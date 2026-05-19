@@ -28,14 +28,14 @@ jobs:
           npm run build
 
       # 4. Test FTP connectivity before attempting deploy
-      - name: 🔍 Test FTP connectivity
+      - name: 🔍 Test connectivity
         run: |
-          echo "Testing port 21..."
+          echo "Testing port 21 (FTP)..."
           nc -zv -w 10 ftp.intellectexplorer.com 21 && echo "✅ Port 21 reachable" || echo "❌ Port 21 blocked"
-          echo "Testing port 990 (FTPS)..."
-          nc -zv -w 10 ftp.intellectexplorer.com 990 && echo "✅ Port 990 reachable" || echo "❌ Port 990 blocked"
-          echo "DNS lookup:"
-          nslookup ftp.intellectexplorer.com
+          echo "Testing port 22 (SFTP/SSH)..."
+          nc -zv -w 10 ftp.intellectexplorer.com 22 && echo "✅ Port 22 reachable" || echo "❌ Port 22 blocked"
+          echo "Testing port 2222 (alt SFTP)..."
+          nc -zv -w 10 ftp.intellectexplorer.com 2222 && echo "✅ Port 2222 reachable" || echo "❌ Port 2222 blocked"
 
       # 5. Upload to Hostagle via FTP
       - name: 📂 Sync files
