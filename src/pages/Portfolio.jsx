@@ -35,14 +35,14 @@ const Portfolio = () => {
       </h3>
       
       <p className="text-zinc-500 text-sm max-w-md mb-12 leading-relaxed font-light">
-        This section of the archive is currently being architected. <br/>
+        This sector of the archive is still being filed. <br/>
         Theory precedes execution.
       </p>
       
       {/* 2. The "Ghost" Link */}
-      <Link 
-        to="/journal" 
-        className="group flex items-center gap-4 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors"
+      <Link
+        to="/journal"
+        className="group inline-flex items-center gap-4 px-5 py-3 border border-white/[0.08] rounded-sm bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-white/20 transition-all duration-300 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white"
       >
         <span>Read the Manifesto</span>
         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300 text-emerald-500" />
@@ -59,7 +59,7 @@ const Portfolio = () => {
         <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
             <span className="font-mono text-[10px] md:text-xs text-blue-400 tracking-widest uppercase mb-4 block">
-              Directory / Level 1
+              Directory / Work
             </span>
             <h1 className="font-serif text-5xl md:text-8xl text-white leading-none">
               The <span className="italic text-zinc-500">Archive.</span>
@@ -140,7 +140,7 @@ const Portfolio = () => {
                           {project.password && (
                             <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 bg-black/60 border border-white/10 rounded-full backdrop-blur-md">
                                <Lock size={10} className="text-zinc-400" />
-                               <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-400">Restricted</span>
+                               <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-400">Restricted</span>
                             </div>
                           )}
 
@@ -148,7 +148,7 @@ const Portfolio = () => {
                           <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
                              <div className="flex justify-between items-end gap-4">
                                 <div>
-                                  <span className="font-mono text-[9px] md:text-[10px] text-blue-400 mb-2 block">
+                                  <span className="font-mono text-[10px] text-blue-400 mb-2 block">
                                     CASE #{index < 9 ? `00${index + 1}` : `0${index + 1}`}
                                   </span>
                                   <h3 className="font-serif text-2xl md:text-3xl text-zinc-100 group-hover:text-white transition-colors break-words">
@@ -166,11 +166,11 @@ const Portfolio = () => {
                         </div>
 
                         {/* Description Line */}
-                        <div className="mt-4 flex justify-between items-start border-t border-white/5 pt-4">
+                        <div className="mt-4 flex justify-between items-start border-t border-white/[0.08] pt-4">
                           <p className="text-xs md:text-sm text-zinc-500 font-light max-w-xs leading-relaxed line-clamp-2">
                             {project.description}
                           </p>
-                          <span className="px-2 py-1 rounded border border-white/5 text-[9px] md:text-[10px] font-mono text-zinc-600 uppercase flex-shrink-0">
+                          <span className="px-2 py-1 rounded border border-white/[0.08] text-[10px] font-mono text-zinc-500 uppercase flex-shrink-0">
                             {project.year || '2026'}
                           </span>
                         </div>
@@ -203,14 +203,14 @@ const Portfolio = () => {
                         transition={{ delay: index * 0.05 }}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
-                        className="group h-full bg-zinc-900/20 border border-white/5 hover:border-white/10 rounded-sm p-5 md:p-6 transition-all duration-300 flex flex-col justify-between"
+                        className="group h-full bg-zinc-900/20 border border-white/[0.08] hover:border-white/10 rounded-sm p-5 md:p-6 transition-all duration-300 flex flex-col justify-between"
                       >
                         <div>
                           <div className="flex justify-between items-start mb-6">
                             <div className="p-2 bg-white/5 rounded-sm text-zinc-400 group-hover:text-white transition-colors">
                                <Beaker size={16} />
                             </div>
-                            {lab.password && <Lock size={14} className="text-zinc-600" />}
+                            {lab.password && <Lock size={14} className="text-zinc-500" />}
                           </div>
                           
                           <h3 className="text-lg font-bold text-zinc-300 group-hover:text-white mb-2 transition-colors break-words">
@@ -223,7 +223,7 @@ const Portfolio = () => {
                         
                         <div className="w-full h-px bg-white/5 group-hover:bg-white/10 transition-colors mb-4" />
                         
-                        <div className="text-[9px] font-mono text-zinc-600 uppercase tracking-widest flex justify-between">
+                        <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex justify-between">
                           <span>EXP-{index < 9 ? `00${index + 1}` : `0${index + 1}`}</span>
                           <span className="group-hover:text-blue-400 transition-colors">:: ACCESS</span>
                         </div>

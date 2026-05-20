@@ -47,7 +47,7 @@ const PostView = () => {
               {post.category}
             </span>
             <span className="w-px h-3 bg-zinc-800" />
-            <span className="font-mono text-[10px] md:text-xs text-zinc-600 uppercase tracking-widest">
+            <span className="font-mono text-[10px] md:text-xs text-zinc-500 uppercase tracking-widest">
               {post.date}
             </span>
           </div>

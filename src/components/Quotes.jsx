@@ -49,7 +49,7 @@ const Quotes = ({ activeMode }) => {
       <h2 className={`font-serif text-3xl md:text-5xl leading-tight mb-8 transition-colors duration-500 ${activeMode ? 'text-zinc-500' : 'text-zinc-300'}`}>
         "{renderText(quote.text)}"
       </h2>
-      <p className="font-mono text-xs text-zinc-600 tracking-[0.3em] uppercase mb-16">
+      <p className="font-mono text-xs text-zinc-500 tracking-[0.3em] uppercase mb-16">
         — {quote.author}
       </p>
     </div>

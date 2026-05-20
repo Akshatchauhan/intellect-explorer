@@ -72,7 +72,7 @@ const Contact = () => {
           {/* === HEADER SECTION === */}
           <div className="mb-16 md:mb-24">
             <span className="font-mono text-[10px] md:text-xs text-blue-400 tracking-widest uppercase mb-4 block">
-              Transmission / Level 3
+              Transmission / Open
             </span>
             <h1 className="font-serif text-5xl md:text-8xl text-white leading-none">
               The <span className="italic text-zinc-500">Uplink.</span>
@@ -88,7 +88,7 @@ const Contact = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="col-span-1 md:col-span-2 group relative p-6 md:p-8 border border-white/5 bg-zinc-900/20 hover:bg-zinc-900/50 rounded-sm hover:border-white/10 transition-all duration-500 cursor-pointer overflow-hidden"
+              className="col-span-1 md:col-span-2 group relative p-6 md:p-8 border border-white/[0.08] bg-zinc-900/20 hover:bg-zinc-900/50 rounded-sm hover:border-white/10 transition-all duration-500 cursor-pointer overflow-hidden"
             >
               <div className="relative z-10 flex items-start justify-between">
                 <div className="flex items-start gap-4">
@@ -102,7 +102,7 @@ const Contact = () => {
                     <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
                       <span>Format: PDF</span>
                       <span className="hidden md:inline text-zinc-800">|</span>
-                      <span>Classified 2026</span>
+                      <span>Issued 2026</span>
                       <span className="hidden md:inline text-zinc-800">|</span>
                       <span className="text-emerald-500/80">Clearance Granted</span>
                     </div>
@@ -124,15 +124,15 @@ const Contact = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="group relative p-6 md:p-8 border border-white/5 bg-zinc-900/20 hover:bg-zinc-900/50 rounded-sm hover:border-white/10 transition-all duration-500 flex flex-col justify-between min-h-[200px]"
+              className="group relative p-6 md:p-8 border border-white/[0.08] bg-zinc-900/20 hover:bg-zinc-900/50 rounded-sm hover:border-white/10 transition-all duration-500 flex flex-col justify-between min-h-[200px]"
             >
               <div className="flex justify-between items-start">
                 <Mail size={24} className="text-zinc-500 group-hover:text-white transition-colors" strokeWidth={1.5} />
-                <ArrowUpRight size={18} className="text-zinc-600 group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-500" />
+                <ArrowUpRight size={18} className="text-zinc-500 group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-500" />
               </div>
 
               <div>
-                <span className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest mb-2 block group-hover:text-blue-400 transition-colors">
+                <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest mb-2 block group-hover:text-blue-400 transition-colors">
                   Official Channel
                 </span>
                 <h3 className="text-lg md:text-xl text-zinc-300 group-hover:text-white font-light break-all">
@@ -149,15 +149,15 @@ const Contact = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="group relative p-6 md:p-8 border border-white/5 bg-zinc-900/20 hover:bg-zinc-900/50 rounded-sm hover:border-white/10 transition-all duration-500 flex flex-col justify-between min-h-[200px]"
+              className="group relative p-6 md:p-8 border border-white/[0.08] bg-zinc-900/20 hover:bg-zinc-900/50 rounded-sm hover:border-white/10 transition-all duration-500 flex flex-col justify-between min-h-[200px]"
             >
               <div className="flex justify-between items-start">
                 <Linkedin size={24} className="text-zinc-500 group-hover:text-white transition-colors" strokeWidth={1.5} />
-                <ArrowUpRight size={18} className="text-zinc-600 group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-500" />
+                <ArrowUpRight size={18} className="text-zinc-500 group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-500" />
               </div>
 
               <div>
-                <span className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest mb-2 block group-hover:text-blue-400 transition-colors">
+                <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest mb-2 block group-hover:text-blue-400 transition-colors">
                   Professional Network
                 </span>
                 <h3 className="text-xl md:text-2xl text-zinc-300 group-hover:text-white font-light">
@@ -170,7 +170,7 @@ const Contact = () => {
         </div>
 
         {/* === BOTTOM: COPYRIGHT & LOCATION === */}
-        <div className="mt-32 md:mt-40 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+        <div className="mt-32 md:mt-40 pt-8 border-t border-white/[0.08] flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
 
           <div className="flex items-start gap-3">
             <div className="p-2 bg-white/5 rounded-full text-zinc-400">
@@ -178,7 +178,7 @@ const Contact = () => {
             </div>
             <div>
               <span className="block font-serif text-zinc-200">New Delhi, India</span>
-              <span className="block font-mono text-[10px] text-zinc-600 uppercase tracking-widest mt-1">
+              <span className="block font-mono text-[10px] text-zinc-500 uppercase tracking-widest mt-1">
                 28.6139° N, 77.2090° E
               </span>
             </div>
@@ -186,11 +186,10 @@ const Contact = () => {
 
           <div className="text-left md:text-right">
             <div className="flex items-baseline gap-1 md:justify-end">
-              <span className="font-serif text-lg text-zinc-300">Intellect</span>
-              <span className="font-sans font-bold text-lg text-white tracking-tight">Explorer</span>
+              <span className="font-serif text-lg text-white"><span className="italic">Intellect</span> Explorer</span>
               <sup className="text-[10px] text-zinc-500 font-mono">TM</sup>
             </div>
-            <div className="mt-2 font-mono text-[9px] text-zinc-600 uppercase tracking-widest">
+            <div className="mt-2 font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
               <span>© 2026 Akshat Chauhan.</span>
               <span className="mx-2 text-zinc-800">|</span>
               <span>All Rights Reserved.</span>

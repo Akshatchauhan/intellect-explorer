@@ -89,30 +89,6 @@ const RealityLayer = ({ mode }) => {
   );
 };
 
-// --- COMPONENT: POWER SURGE CARD (Silent Edition) ---
-const PowerSurgeCard = ({ label, value, active }) => {
-  return (
-    <div
-      className="group relative overflow-hidden rounded-sm bg-zinc-900/40 border border-white/5 transition-all duration-500 hover:border-zinc-700 hover:bg-zinc-800/60"
-    >
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-white/50 to-transparent z-10 opacity-0 transition-opacity duration-300 group-hover:animate-scan group-hover:opacity-100" />
-      <div className="relative h-full w-full p-5 flex flex-col justify-between z-0">
-        <div className="text-[10px] text-zinc-600 uppercase tracking-widest mb-3 transition-colors duration-300 group-hover:text-zinc-400">
-          {label}
-        </div>
-        <div className="font-mono text-sm tracking-wide text-zinc-500 transition-all duration-300 flex items-center gap-3 group-hover:text-white group-hover:drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]">
-           {active && (
-             <span className="relative flex h-2 w-2">
-               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
-               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-             </span>
-           )}
-           {value}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const sectionVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -181,6 +157,14 @@ const Home = () => {
         {/* --- SECTION 1: HERO --- */}
         <section className="h-screen w-full flex flex-col items-center justify-center px-4 md:px-6 snap-start">
           <div className="text-center max-w-4xl mx-auto flex flex-col items-center relative min-h-[500px] justify-center">
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2, duration: 0.8 }}
+              className="font-mono text-[10px] text-zinc-500 uppercase tracking-[0.3em] mb-8 flex items-center gap-3 select-none"
+            >
+              <span>Akshat Chauhan</span>
+              <span className="text-zinc-800">··</span>
+              <span>Experience Architect</span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}
               className={`font-serif text-5xl md:text-9xl font-medium tracking-tight mb-6 md:mb-8 leading-[0.9] ${getTitleStyle()}`}
@@ -204,7 +188,7 @@ const Home = () => {
               </AnimatePresence>
             </motion.h1>
 
-            <div className="h-[3.5rem] md:h-[4rem] mb-8 flex items-center justify-center w-full">
+            <div className="h-[3.5rem] md:h-[4rem] mb-5 flex items-center justify-center w-full">
               <AnimatePresence mode="wait">
                 <motion.p
                   key={activeMode ?? 'default'}
@@ -218,7 +202,7 @@ const Home = () => {
                    activeMode === 'behavioral' ? "Intercepting raw signals from the noise." :
                    activeMode === 'interface' ? "Rendering structure from abstract data." :
                    activeMode === 'strategy' ? "Calculating the optimal path to victory." :
-                   "Architecting digital empires via the subconscious mind."}
+                   "The subconscious is the interface."}
                 </motion.p>
               </AnimatePresence>
             </div>
@@ -227,14 +211,14 @@ const Home = () => {
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 1 }}
               className="font-mono flex flex-wrap items-center justify-center gap-4 text-[10px] md:text-xs text-zinc-500 uppercase tracking-widest mb-4 select-none"
             >
-              <span onClick={() => handleModeClick('cognitive')} className={`cursor-pointer transition-all duration-300 py-4 px-4 hover:text-indigo-300 ${activeMode === 'cognitive' ? 'text-indigo-400 font-bold scale-110' : ''}`}>Psychology</span>
+              <span onClick={() => handleModeClick('cognitive')} className={`cursor-pointer transition-all duration-300 py-2 px-3 hover:text-indigo-300 ${activeMode === 'cognitive' ? 'text-indigo-400 font-bold scale-110' : ''}`}>Mind</span>
               <span className="text-zinc-700">×</span>
-              <span onClick={() => handleModeClick('interface')} className={`cursor-pointer transition-all duration-300 py-4 px-4 hover:text-emerald-300 ${activeMode === 'interface' ? 'text-emerald-400 font-mono font-bold scale-110' : ''}`}>Infrastructure</span>
+              <span onClick={() => handleModeClick('interface')} className={`cursor-pointer transition-all duration-300 py-2 px-3 hover:text-emerald-300 ${activeMode === 'interface' ? 'text-emerald-400 font-mono font-bold scale-110' : ''}`}>Medium</span>
             </motion.div>
 
             <div className="flex flex-col items-center gap-2">
-              <span className="text-[10px] font-mono text-zinc-600 tracking-widest uppercase">
-                {activeMode ? "SIMULATION ACTIVE" : "SCROLL TO DECRYPT"}
+              <span className="text-[10px] font-mono text-zinc-500 tracking-widest uppercase">
+                {activeMode ? "SIMULATION ACTIVE" : "SCROLL TO ACCESS"}
               </span>
               <AnimatePresence>
                 {!activeMode && (
@@ -274,25 +258,26 @@ const Home = () => {
             className="flex flex-col items-center"
           >
             <h3 className="text-3xl md:text-6xl font-serif text-white mb-6 leading-tight">
-              I don't just design screens. <br />
-              <span className="text-zinc-500 italic">I design decisions.</span>
+              I don't design screens. <br />
+              <span className="text-zinc-500 italic">I design behavior.</span>
             </h3>
 
-            <p className="text-zinc-400 max-w-2xl text-lg font-light mb-12">
-              In a world drowning in noise, true luxury is clarity. I use my background in
+            <p className="text-zinc-400 max-w-2xl text-lg font-light mb-8">
+              True luxury is clarity. I use
               <button className="text-indigo-400 hover:underline decoration-indigo-500/30 mx-2 font-medium" onClick={() => handleModeClick('cognitive')}>
-                psychology
+                cognitive science
               </button>
-              to build digital environments that respect the user's subconscious.
+              to build digital environments that don't just look right — they feel inevitable.
+              Products, systems, and experiences designed for people who think.
             </p>
 
             <div className="flex gap-8 opacity-70">
               <button onClick={() => handleModeClick('behavioral')} className="flex items-center gap-2 group">
-                <Radio size={16} className={`group-hover:text-red-500 transition-colors ${activeMode === 'behavioral' ? 'text-red-500' : 'text-zinc-600'}`} />
+                <Radio size={16} className={`group-hover:text-red-500 transition-colors ${activeMode === 'behavioral' ? 'text-red-500' : 'text-zinc-500'}`} />
                 <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest group-hover:text-white">Behavioral</span>
               </button>
               <button onClick={() => handleModeClick('strategy')} className="flex items-center gap-2 group">
-                <Zap size={16} className={`group-hover:text-yellow-200 transition-colors ${activeMode === 'strategy' ? 'text-white fill-white' : 'text-zinc-600'}`} />
+                <Zap size={16} className={`group-hover:text-yellow-200 transition-colors ${activeMode === 'strategy' ? 'text-white fill-white' : 'text-zinc-500'}`} />
                 <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest group-hover:text-white">Strategy</span>
               </button>
             </div>
@@ -306,26 +291,39 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.3 }}
-            className="max-w-5xl w-full"
+            className="max-w-xl w-full"
           >
-            <div className="grid md:grid-cols-2 gap-16 items-start mb-16">
+            {/* Bio */}
+            <span className="text-emerald-500 font-mono text-xs tracking-[0.2em] mb-2 block">Subject_ID</span>
+            <h4 className="text-4xl font-serif text-white italic mb-2">Akshat Chauhan</h4>
+            <span className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-6 block">Experience Architect</span>
+            <p className="text-zinc-400 leading-relaxed mb-8">
+              "Design is not decoration; it is directed psychology."
+            </p>
 
-              {/* Bio */}
-              <div>
-                <span className="text-emerald-500 font-mono text-xs tracking-[0.2em] mb-2 block">Subject_ID</span>
-                <h4 className="text-4xl font-serif text-white italic mb-2">Akshat Chauhan</h4>
-                <span className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-6 block">Experience Architect</span>
-                <p className="text-zinc-400 leading-relaxed">
-                  "Design is not decoration; it is directed psychology. With a foundation in Cognitive Science, I decode the 'why' behind user actions."
-                </p>
-              </div>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-4">
-                <PowerSurgeCard label="Base" value="New Delhi, IN" />
-                <PowerSurgeCard label="Status" value="Online" active={true} />
-                <PowerSurgeCard label="Engine" value="React + Framer" />
-                <PowerSurgeCard label="Core" value="Stoic Philosophy" />
+            {/* Metadata strip */}
+            <div className="flex flex-wrap gap-x-6 gap-y-3 border-t border-white/[0.08] pt-6 mb-10">
+              {[
+                { label: 'Base', value: 'New Delhi, IN' },
+                { label: 'Engine', value: 'React + Framer' },
+                { label: 'Core', value: 'Stoic Philosophy' },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">{label}</span>
+                  <span className="w-px h-3 bg-zinc-800" />
+                  <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest">{value}</span>
+                </div>
+              ))}
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">Status</span>
+                <span className="w-px h-3 bg-zinc-800" />
+                <span className="flex items-center gap-2 font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                  </span>
+                  Online
+                </span>
               </div>
             </div>
 
@@ -336,23 +334,43 @@ const Home = () => {
                   {!isNavigating ? (
                     <motion.button
                       key="btn"
-                      initial={{ opacity: 0, scale: 0.9 }}
+                      initial={{ opacity: 0, scale: 0.97 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      exit={{ opacity: 0, scale: 0.97 }}
+                      transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.97 }}
                       onClick={handleAccess}
-                      className="group flex items-center gap-4 px-8 py-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 hover:border-white/20 transition-all"
+                      className="group relative overflow-hidden flex items-center gap-5 px-10 py-[18px] border border-white/[0.18] rounded-full hover:border-white/35 transition-colors duration-700"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.015) 100%)',
+                        boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.12), 0 1px 40px rgba(0,0,0,0.5)',
+                      }}
                     >
-                      <span className="font-serif text-lg md:text-xl text-white tracking-wide">
-                        Initialize <span className="italic text-zinc-500 group-hover:text-zinc-400 transition-colors">Archive.</span>
-                      </span>
+                      {/* Light sweep — like sun catching polished metal */}
                       <motion.div
-                        whileHover={{ scale: 1.2, rotate: 12 }}
-                        whileTap={{ scale: 1.6, filter: 'brightness(4)' }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                        className="absolute top-0 bottom-0 w-1/2 pointer-events-none"
+                        style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)' }}
+                        animate={{ x: ['-120%', '340%'] }}
+                        transition={{ duration: 4, repeat: Infinity, repeatDelay: 5, ease: [0.4, 0, 0.6, 1] }}
+                      />
+
+                      <span className="relative font-serif text-xl md:text-2xl text-white/70 tracking-wide group-hover:text-white transition-colors duration-700 select-none">
+                        Access{' '}
+                        <span className="italic text-white/30 group-hover:text-white/60 transition-colors duration-700">
+                          the Archive.
+                        </span>
+                      </span>
+
+                      {/* Hairline divider */}
+                      <span className="w-px h-4 bg-white/15 shrink-0" />
+
+                      <motion.div
+                        whileHover={{ rotate: 15 }}
+                        whileTap={{ scale: 1.4, filter: 'brightness(3)' }}
+                        transition={{ type: 'spring', stiffness: 250, damping: 18 }}
                       >
-                        <Fingerprint className="text-zinc-600 group-hover:text-emerald-400 transition-colors" size={20} />
+                        <Fingerprint size={18} className="text-white/30 group-hover:text-white/60 transition-colors duration-700" />
                       </motion.div>
                     </motion.button>
                   ) : (

@@ -30,17 +30,16 @@ const Journal = () => {
       
       {/* Matching margin-bottom (mb-12) and styling */}
       <p className="text-zinc-500 text-sm max-w-md mb-12 leading-relaxed font-light">
-        No thoughts have been recorded in this sector yet. <br/>
-        The signal is awaiting input.
+        No transmissions logged in this frequency yet. <br/>
+        The signal is still forming.
       </p>
       
       {/* 2. Contact Link (Matches Portfolio Link Style with Arrow) */}
-      <Link 
+      <Link
         to="/contact"
-        className="group flex items-center gap-4 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors"
+        className="group inline-flex items-center gap-4 px-5 py-3 border border-white/[0.08] rounded-sm bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-white/20 transition-all duration-300 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white"
       >
         <span>:: Establish Uplink</span>
-        {/* Added Arrow back to match Portfolio style */}
         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300 text-blue-500" />
       </Link>
     </motion.div>
@@ -55,7 +54,7 @@ const Journal = () => {
         <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
           <div>
             <span className="font-mono text-[10px] md:text-xs text-blue-400 tracking-widest uppercase mb-4 block">
-              Neural Logs / Level 2
+              Dispatches / Ongoing
             </span>
             <h1 className="font-serif text-4xl md:text-8xl text-white leading-none">
               The <span className="italic text-zinc-500">Manifesto.</span>
@@ -98,7 +97,7 @@ const Journal = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ delay: index * 0.05 }}
-                  className="group relative p-5 md:p-8 border border-white/5 bg-zinc-900/20 hover:bg-zinc-900/50 transition-all duration-500 rounded-sm hover:border-white/10"
+                  className="group relative p-5 md:p-8 border border-white/[0.08] bg-zinc-900/20 hover:bg-zinc-900/50 transition-all duration-500 rounded-sm hover:border-white/10"
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     
@@ -106,11 +105,11 @@ const Journal = () => {
                     <div className="max-w-2xl w-full">
                       {/* Meta Data Line */}
                       <div className="flex items-center gap-3 mb-4">
-                          <span className="font-mono text-[9px] md:text-[10px] text-blue-400 uppercase tracking-widest">
+                          <span className="font-mono text-[10px] text-blue-400 uppercase tracking-widest">
                             {post.category}
                           </span>
                           <span className="w-px h-3 bg-zinc-800" />
-                          <span className="font-mono text-[9px] md:text-[10px] text-zinc-600 uppercase tracking-widest">
+                          <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
                             {post.date}
                           </span>
                       </div>
@@ -127,7 +126,7 @@ const Journal = () => {
                     </div>
 
                     {/* Right: Interaction Icon */}
-                    <div className="hidden md:flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-white/10 text-zinc-600 group-hover:bg-white group-hover:text-black transition-all duration-500">
+                    <div className="hidden md:flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-white/10 text-zinc-500 group-hover:bg-white group-hover:text-black transition-all duration-500">
                       <ArrowRight size={18} className="group-hover:-rotate-45 transition-transform duration-500" />
                     </div>
 
