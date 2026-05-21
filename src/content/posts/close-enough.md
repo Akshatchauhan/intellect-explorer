@@ -1,5 +1,5 @@
 ---
-id: close-enough
+id: close-enough-to-understand-far-enough-to-stay
 title: Close Enough to Understand, Far Enough to Stay
 description: Most people either fix or merge. There is a third way of being present that looks, from the outside, like distance. It isn't.
 category: PSYCHOLOGY

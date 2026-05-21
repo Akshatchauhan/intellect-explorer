@@ -125,7 +125,7 @@ const Home = () => {
       <div className="relative z-10 w-full">
 
         {/* --- SECTION 1: HERO --- */}
-        <section className="h-screen w-full flex flex-col items-center justify-center px-4 md:px-6 snap-center snap-always">
+        <section className="h-[100dvh] w-full flex flex-col items-center justify-center px-4 md:px-6 snap-center snap-always pb-24 md:pb-0">
           <div className="text-center max-w-4xl mx-auto flex flex-col items-center relative min-h-[500px] justify-center">
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2, duration: 0.8 }}
@@ -137,7 +137,7 @@ const Home = () => {
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}
-              className={`font-serif text-5xl md:text-9xl font-medium tracking-tight mb-6 md:mb-8 leading-[0.9] ${getTitleStyle()}`}
+              className={`font-serif text-7xl md:text-9xl font-medium tracking-tight mb-6 md:mb-8 leading-[0.9] ${getTitleStyle()}`}
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -158,7 +158,7 @@ const Home = () => {
               </AnimatePresence>
             </motion.h1>
 
-            <div className="h-[3.5rem] md:h-[4rem] mb-5 flex items-center justify-center w-full">
+            <div className="h-[3.5rem] md:h-[4rem] mb-0 flex items-center justify-center w-full">
               <AnimatePresence mode="wait">
                 <motion.p
                   key={activeMode ?? 'default'}
@@ -166,7 +166,7 @@ const Home = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.25, ease: 'easeOut' }}
-                  className={`text-lg md:text-xl font-light leading-relaxed tracking-wide max-w-lg text-center ${getSubtextStyle()}`}
+                  className={`text-sm md:text-xl font-light leading-relaxed tracking-wide max-w-lg text-center ${getSubtextStyle()}`}
                 >
                   {activeMode === 'cognitive' ? "Decoding the architecture of the human mind." :
                    activeMode === 'interface' ? "Rendering structure from abstract data." :
@@ -205,7 +205,7 @@ const Home = () => {
         </section>
 
         {/* --- SECTION 2: QUOTES --- */}
-        <section className="h-screen w-full flex flex-col items-center justify-center px-4 md:px-6 snap-center snap-always">
+        <section className="h-[100dvh] w-full flex flex-col items-center justify-center px-4 md:px-6 snap-center snap-always">
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -243,7 +243,7 @@ const Home = () => {
         </section>
 
         {/* --- SECTION 4: IDENTITY --- */}
-        <section className="h-screen w-full flex flex-col items-center justify-center px-4 md:px-6 snap-center snap-always pb-24 md:pb-0">
+        <section className="h-[100dvh] w-full flex flex-col items-center justify-center px-4 md:px-6 snap-center snap-always pb-24 md:pb-0">
           <motion.div
             variants={sectionVariants}
             initial="hidden"
@@ -252,34 +252,21 @@ const Home = () => {
             className="max-w-xl w-full"
           >
             {/* Bio */}
-            <span className="text-emerald-500 font-mono text-xs tracking-[0.2em] mb-2 block">Subject_ID</span>
-            <h4 className="text-4xl font-serif text-white italic mb-2">Akshat Chauhan</h4>
-            <span className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-6 block">Experience Architect</span>
-            <p className="text-zinc-400 leading-relaxed mb-8 tracking-wide">
+            <h4 className="text-3xl md:text-4xl font-serif text-white italic mb-1 md:mb-2">Akshat Chauhan</h4>
+            <span className="text-zinc-500 font-mono text-xs uppercase tracking-widest mb-4 md:mb-6 block">Experience Architect</span>
+            <p className="text-zinc-400 leading-relaxed mb-4 md:mb-8 tracking-wide text-sm md:text-base">
               "Design is not decoration; it is directed psychology."
             </p>
 
             {/* Bio */}
-            <p className="text-zinc-400 leading-relaxed mb-8 tracking-wide">
+            <p className="text-zinc-400 leading-relaxed mb-8 md:mb-12 tracking-wide text-sm md:text-base">
               I want to understand the people in the room before the room understands them. That instinct, reading before being read, is what I'm here to sharpen.
             </p>
 
-            {/* Status */}
-            <div className="flex items-center gap-2 border-t border-white/[0.08] pt-6 mb-10">
-              <span className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">Status</span>
-              <span className="w-px h-3 bg-zinc-800" />
-              <span className="flex items-center gap-2 font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 animate-ping" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-                </span>
-                Online
-              </span>
-            </div>
 
             {/* FINAL CTA */}
             <div className="flex justify-center">
-              <div className="h-24 flex items-center justify-center relative">
+              <div className="h-16 md:h-24 flex items-center justify-center relative">
                 <AnimatePresence mode="wait">
                   {!isNavigating ? (
                     <motion.button

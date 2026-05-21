@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { getPosts } from '../utils/content';
 import PageTransition from '../components/PageTransition';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 
 const Journal = () => {
   const posts = getPosts();
+  const { scrollY } = useScroll();
+  const headerOpacity = useTransform(scrollY, [0, 80], [1, 0]);
+  const headerY = useTransform(scrollY, [0, 80], [0, -8]);
+  const [scrolled, setScrolled] = useState(false);
+  useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 80));
   const categories = ['ALL', ...new Set(posts.map(p => p.category))];
   const [searchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState(
     () => searchParams.get('category') || 'ALL'
   );
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const filteredPosts = selectedCategory === 'ALL'
     ? posts
@@ -63,7 +69,10 @@ const Journal = () => {
       <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-6xl mx-auto pb-40 relative z-10">
         
         {/* === HEADER SECTION === */}
-        <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <motion.div
+          style={{ opacity: headerOpacity, y: headerY, pointerEvents: scrolled ? 'none' : 'auto' }}
+          className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8"
+        >
           <div>
             <span className="font-mono text-[10px] md:text-xs text-blue-400 tracking-widest uppercase mb-4 block">
               Dispatches / Ongoing
@@ -75,40 +84,120 @@ const Journal = () => {
 
           {/* FILTER SCROLL */}
           <div className="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0">
-             <div className="inline-flex items-center gap-1">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`relative px-5 py-2 rounded-sm text-[10px] md:text-xs font-mono tracking-widest uppercase transition-colors duration-300 flex-shrink-0 ${
-                      selectedCategory === cat ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
-                    {selectedCategory === cat && (
-                      <motion.div
-                        layoutId="activeCategory"
-                        className="absolute inset-0 rounded-sm bg-white/[0.04] border border-white/20"
-                        transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
-                      />
-                    )}
-                    <span className="relative z-10">{cat}</span>
-                  </button>
-                ))}
-             </div>
+            <div className="inline-flex items-center gap-1">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`relative px-5 py-2 rounded-sm text-[10px] md:text-xs font-mono tracking-widest uppercase transition-colors duration-300 flex-shrink-0 ${
+                    selectedCategory === cat ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  {selectedCategory === cat && (
+                    <motion.div
+                      layoutId="activeCategory"
+                      className="absolute inset-0 rounded-sm bg-white/[0.04] border border-white/20"
+                      transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
+                    />
+                  )}
+                  <span className="relative z-10">{cat}</span>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        </motion.div>
+
+        {/* === STICKY HEADER BAR === */}
+        <AnimatePresence>
+          {scrolled && (
+            <motion.div
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.3 }}
+              className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-black/30 border-b border-white/[0.06]"
+            >
+              <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+                <Link to="/" className="flex flex-col group cursor-pointer">
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-serif italic text-2xl text-white leading-none group-hover:text-zinc-300 transition-colors duration-300">I</span>
+                    <span className="font-serif text-xl text-zinc-400 leading-none group-hover:text-white transition-colors duration-300">E</span>
+                  </div>
+                  <span className="font-serif italic text-sm text-zinc-400 leading-snug group-hover:text-white transition-colors duration-300">the Manifesto.</span>
+                </Link>
+                {/* Sticky filters — mobile dropdown */}
+                <div className="md:hidden relative">
+                  <button
+                    onClick={() => setDropdownOpen(o => !o)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-sm border border-white/[0.08] text-[10px] font-mono tracking-widest uppercase text-white"
+                  >
+                    <span>{selectedCategory}</span>
+                    <ChevronDown size={10} strokeWidth={1.5} className={`transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {dropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full right-0 mt-1 z-50 backdrop-blur-xl bg-zinc-900/60 border border-white/10 rounded-sm overflow-hidden min-w-[120px] shadow-xl shadow-black/50"
+                      >
+                        {categories.map((cat) => (
+                          <button
+                            key={cat}
+                            onClick={() => { setSelectedCategory(cat); setDropdownOpen(false); }}
+                            className={`w-full text-left px-4 py-2.5 text-[10px] font-mono tracking-widest uppercase transition-colors duration-150 ${
+                              selectedCategory === cat ? 'text-white bg-white/[0.06]' : 'text-zinc-500 hover:text-white hover:bg-white/[0.03]'
+                            }`}
+                          >
+                            {cat}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Sticky filters — desktop tabs */}
+                <div className="hidden md:inline-flex items-center gap-1">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`relative px-4 py-1.5 rounded-sm text-[10px] font-mono tracking-widest uppercase transition-colors duration-300 flex-shrink-0 ${
+                        selectedCategory === cat ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      {selectedCategory === cat && (
+                        <motion.div
+                          layoutId="activeCategorySticky"
+                          className="absolute inset-0 rounded-sm bg-white/[0.04] border border-white/20"
+                          transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
+                        />
+                      )}
+                      <span className="relative z-10">{cat}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* === CONTENT LIST === */}
-        <div className="space-y-4">
-          <AnimatePresence mode='popLayout'>
-            {filteredPosts.map((post, index) => (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedCategory}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="space-y-4"
+          >
+            {filteredPosts.map((post) => (
               <Link key={post.id} to={`/journal/${post.id}`} className="block">
-                <motion.div 
-                  layout 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: index * 0.05 }}
+                <div
                   className="group relative p-5 md:p-8 border border-white/[0.08] bg-zinc-900/20 hover:bg-zinc-900/50 transition-all duration-500 rounded-sm hover:border-white/10"
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -137,28 +226,18 @@ const Journal = () => {
                       </p>
                     </div>
 
-                    {/* Right: Interaction Icon */}
-                    <div className="hidden md:flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-white/10 text-zinc-500 group-hover:bg-white group-hover:text-black transition-all duration-500">
-                      <ArrowRight size={18} strokeWidth={1.5} className="group-hover:-rotate-45 transition-transform duration-500" />
-                    </div>
-
-                    {/* Mobile Only Icon */}
-                    <div className="md:hidden flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase tracking-widest mt-2 group-hover:text-white">
-                      <span>Read Entry</span>
-                      <ArrowRight size={12} strokeWidth={1.5} />
+                    {/* Expanding dash */}
+                    <div className="hidden md:block ml-auto flex-shrink-0">
+                      <div className="w-4 h-px bg-white/10 group-hover:w-8 group-hover:bg-white/40 transition-all duration-500" />
                     </div>
 
                   </div>
-                </motion.div>
+                </div>
               </Link>
             ))}
-          </AnimatePresence>
-          
-          {/* EMPTY STATE TRIGGER */}
-          {filteredPosts.length === 0 && (
-             <EmptyJournal />
-          )}
-        </div>
+            {filteredPosts.length === 0 && <EmptyJournal />}
+          </motion.div>
+        </AnimatePresence>
 
       </div>
     </PageTransition>

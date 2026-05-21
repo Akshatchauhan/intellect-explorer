@@ -154,7 +154,7 @@ const Navbar = memo(() => {
                             animate={{ opacity: 1, width: 'auto', marginLeft: 8 }}
                             exit={{ opacity: 0, width: 0, marginLeft: 0 }}
                             transition={{ duration: 0.2, ease: 'easeOut' }}
-                            className="font-medium whitespace-nowrap overflow-hidden text-sm"
+                            className="font-mono text-xs tracking-widest whitespace-nowrap overflow-hidden"
                           >
                             {label}
                           </motion.span>
@@ -165,6 +165,7 @@ const Navbar = memo(() => {
                 </Link>
               );
             })}
+
           </motion.nav>
         </motion.div>
       )}

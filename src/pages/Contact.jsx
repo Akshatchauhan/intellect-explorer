@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Linkedin, FileText, ArrowUpRight, Download, MapPin, X } from 'lucide-react';
+import { Mail, FileText, ArrowUpRight, Download, MapPin, X } from 'lucide-react';
+
+const IconLinkedIn = () => (
+  <svg viewBox="0 0 24 24" className="w-6 h-6 text-zinc-500 group-hover:text-white transition-colors">
+    <text
+      x="1"
+      y="18"
+      fontSize="19"
+      fontFamily="'JetBrains Mono', monospace"
+      fontWeight="400"
+      fill="currentColor"
+    >
+      in
+    </text>
+  </svg>
+);
 import PageTransition from '../components/PageTransition';
 
 const ResumeModal = ({ onClose }) => {
@@ -38,14 +53,14 @@ const ResumeModal = ({ onClose }) => {
           className="p-2 bg-zinc-900/80 border border-white/10 rounded-full text-zinc-400 hover:text-white hover:border-white/30 backdrop-blur-sm transition-all duration-300"
           title="Download"
         >
-          <Download size={14} />
+          <Download size={14} strokeWidth={1.5} />
         </a>
         <button
           onClick={onClose}
           className="p-2 bg-zinc-900/80 border border-white/10 rounded-full text-zinc-400 hover:text-white hover:border-white/30 backdrop-blur-sm transition-all duration-300"
           title="Close"
         >
-          <X size={14} />
+          <X size={14} strokeWidth={1.5} />
         </button>
       </div>
 
@@ -92,9 +107,7 @@ const Contact = () => {
             >
               <div className="relative z-10 flex items-start justify-between">
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-white/5 rounded-sm text-zinc-400 group-hover:text-blue-400 transition-colors">
-                    <FileText size={24} strokeWidth={1.5} />
-                  </div>
+                  <FileText size={24} strokeWidth={1.5} className="text-zinc-400 group-hover:text-blue-400 transition-colors" />
                   <div>
                     <h3 className="font-serif text-2xl md:text-3xl text-zinc-200 group-hover:text-white transition-colors mb-2">
                       Capability Dossier
@@ -102,15 +115,13 @@ const Contact = () => {
                     <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
                       <span>Format: PDF</span>
                       <span className="hidden md:inline text-zinc-800">|</span>
-                      <span>Issued 2026</span>
-                      <span className="hidden md:inline text-zinc-800">|</span>
                       <span className="text-emerald-500/80">Clearance Granted</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="p-2 border border-white/10 rounded-full text-zinc-500 group-hover:text-white group-hover:border-white transition-all duration-500">
-                  <Download size={18} />
+                  <Download size={18} strokeWidth={1.5} />
                 </div>
               </div>
 
@@ -127,8 +138,8 @@ const Contact = () => {
               className="group relative p-6 md:p-8 border border-white/[0.08] bg-zinc-900/20 hover:bg-zinc-900/50 rounded-sm hover:border-white/10 transition-all duration-500 flex flex-col justify-between min-h-[200px]"
             >
               <div className="flex justify-between items-start">
-                <Mail size={24} className="text-zinc-500 group-hover:text-white transition-colors" strokeWidth={1.5} />
-                <ArrowUpRight size={18} className="text-zinc-500 group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-500" />
+                <Mail size={24} strokeWidth={1.5} className="text-zinc-500 group-hover:text-white transition-colors" />
+                <ArrowUpRight size={18} strokeWidth={1.5} className="text-zinc-500 group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-500" />
               </div>
 
               <div>
@@ -152,8 +163,8 @@ const Contact = () => {
               className="group relative p-6 md:p-8 border border-white/[0.08] bg-zinc-900/20 hover:bg-zinc-900/50 rounded-sm hover:border-white/10 transition-all duration-500 flex flex-col justify-between min-h-[200px]"
             >
               <div className="flex justify-between items-start">
-                <Linkedin size={24} className="text-zinc-500 group-hover:text-white transition-colors" strokeWidth={1.5} />
-                <ArrowUpRight size={18} className="text-zinc-500 group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-500" />
+                <IconLinkedIn />
+                <ArrowUpRight size={18} strokeWidth={1.5} className="text-zinc-500 group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-500" />
               </div>
 
               <div>
@@ -174,7 +185,7 @@ const Contact = () => {
 
           <div className="flex items-start gap-3">
             <div className="p-2 bg-white/5 rounded-full text-zinc-400">
-              <MapPin size={14} />
+              <MapPin size={14} strokeWidth={1.5} />
             </div>
             <div>
               <span className="block font-serif text-zinc-200">New Delhi, India</span>

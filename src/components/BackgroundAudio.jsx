@@ -85,7 +85,21 @@ const BackgroundAudio = () => {
     );
   }, []);
 
-  // --- 2. MOOD & MUTE LOGIC (With Time Persistence) ---
+  // --- 2. PAGE VISIBILITY (pause when backgrounded / tab hidden) ---
+  useEffect(() => {
+    const handleVisibility = () => {
+      const activeAudio = activeTrackRef.current === 'A' ? audioRefA.current : audioRefB.current;
+      if (document.hidden) {
+        activeAudio.pause();
+      } else if (!isMuted && hasInteracted) {
+        activeAudio.play().catch(() => {});
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [isMuted, hasInteracted]);
+
+  // --- 3. MOOD & MUTE LOGIC (With Time Persistence) ---
   useEffect(() => {
     if (!hasInteracted) return;
 

@@ -97,26 +97,30 @@ const PostView = () => {
         </article>
 
         {/* 4. POST FOOTER */}
-        <div className="mt-16 pt-8 border-t border-white/[0.08] flex flex-col md:flex-row items-start md:items-center justify-between gap-5 md:gap-0">
-          <Link to={`/journal?category=${post.category}`}>
-            <span className="px-4 py-2 text-xs font-mono font-bold tracking-widest text-blue-400 border border-blue-400/20 rounded-sm uppercase bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-400/40 transition-all duration-300 cursor-pointer">
-              {post.category}
-            </span>
-          </Link>
+        <div className="mt-16 pt-8 border-t border-white/[0.08] flex flex-col gap-6">
+          {/* Row 1: category + share */}
+          <div className="flex items-center justify-between">
+            <Link to={`/journal?category=${post.category}`}>
+              <span className="px-4 py-2 text-xs font-mono font-bold tracking-widest text-blue-400 border border-blue-400/20 rounded-sm uppercase bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-400/40 transition-all duration-300 cursor-pointer">
+                {post.category}
+              </span>
+            </Link>
 
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-2 text-zinc-500 hover:text-white transition-colors duration-300"
-          >
-            {copied
-              ? <Check size={13} strokeWidth={1.5} className="text-blue-400" />
-              : <Share2 size={13} strokeWidth={1.5} />
-            }
-            <span className="font-mono text-xs uppercase tracking-widest">
-              {copied ? 'Copied' : 'Share'}
-            </span>
-          </button>
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-2 text-zinc-500 hover:text-white transition-colors duration-300"
+            >
+              {copied
+                ? <Check size={13} strokeWidth={1.5} className="text-blue-400" />
+                : <Share2 size={13} strokeWidth={1.5} />
+              }
+              <span className="font-mono text-xs uppercase tracking-widest">
+                {copied ? 'Copied' : 'Share'}
+              </span>
+            </button>
+          </div>
 
+          {/* Row 2: return link */}
           <Link to="/journal">
             <span className="font-mono text-sm tracking-widest uppercase text-zinc-500 hover:text-white transition-colors duration-500 underline underline-offset-4 decoration-zinc-700 hover:decoration-white">
               Return to <span className="font-serif italic normal-case tracking-normal font-normal">the Manifesto</span>
