@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const TOTAL_SECTIONS = 4;
 
 const GridFrame = () => {
   const [activeSection, setActiveSection] = useState(0);
+  const rafRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-      const vh = window.innerHeight;
-      const section = Math.min(Math.round(scrollY / vh), TOTAL_SECTIONS - 1);
-      setActiveSection(section);
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(() => {
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        const vh = window.innerHeight;
+        const section = Math.min(Math.round(scrollY / vh), TOTAL_SECTIONS - 1);
+        setActiveSection(section);
+        rafRef.current = null;
+      });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (

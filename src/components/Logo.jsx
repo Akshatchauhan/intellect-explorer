@@ -6,12 +6,13 @@ import { getProjects, getPosts } from '../utils/content';
 const PAGE_TITLES = {
   '/portfolio': 'the Archive.',
   '/journal':   'the Manifesto.',
+  '/contact':   'the Uplink.',
 };
 
 const Logo = () => {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
-  const isListingPage = ['/portfolio', '/journal'].includes(location.pathname);
+  const isListingPage = ['/portfolio', '/journal', '/contact'].includes(location.pathname);
   const showLogo = location.pathname !== '/' && !(isListingPage && scrolled);
 
   const pageTitle = PAGE_TITLES[location.pathname];

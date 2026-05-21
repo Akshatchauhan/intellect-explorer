@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { Mail, FileText, ArrowUpRight, Download, MapPin, X } from 'lucide-react';
 
 const IconLinkedIn = () => (
@@ -77,22 +78,53 @@ const ResumeModal = ({ onClose }) => {
 
 const Contact = () => {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
+  const { scrollY } = useScroll();
+  const headerOpacity = useTransform(scrollY, [0, 80], [1, 0]);
+  const headerY = useTransform(scrollY, [0, 80], [0, -8]);
+  const [scrolled, setScrolled] = useState(false);
+  useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 80));
 
   return (
     <PageTransition>
       {/* CONTAINER */}
-      <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-4xl mx-auto pb-20 relative z-10 flex flex-col justify-between">
+      <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-4xl mx-auto pb-36 md:pb-20 relative z-10 flex flex-col justify-between">
 
         <div>
           {/* === HEADER SECTION === */}
-          <div className="mb-16 md:mb-24">
+          <motion.div
+            style={{ opacity: headerOpacity, y: headerY, pointerEvents: scrolled ? 'none' : 'auto' }}
+            className="mb-16 md:mb-24"
+          >
             <span className="font-mono text-[10px] md:text-xs text-blue-400 tracking-widest uppercase mb-4 block">
               Transmission / Open
             </span>
             <h1 className="font-serif text-5xl md:text-8xl text-white leading-none">
               The <span className="italic text-zinc-500">Uplink.</span>
             </h1>
-          </div>
+          </motion.div>
+
+          {/* === STICKY HEADER BAR === */}
+          <AnimatePresence>
+            {scrolled && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.3 }}
+                className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-black/30 border-b border-white/[0.06]"
+              >
+                <div className="max-w-4xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+                  <Link to="/" className="flex flex-col group cursor-pointer">
+                    <div className="flex items-baseline gap-1">
+                      <span className="font-serif italic text-2xl text-white leading-none group-hover:text-zinc-300 transition-colors duration-300">I</span>
+                      <span className="font-serif text-xl text-zinc-400 leading-none group-hover:text-white transition-colors duration-300">E</span>
+                    </div>
+                    <span className="font-serif italic text-sm text-zinc-400 leading-snug group-hover:text-white transition-colors duration-300">the Uplink.</span>
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* === CONTROL GRID === */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">

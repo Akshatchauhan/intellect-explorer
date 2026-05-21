@@ -22,7 +22,7 @@ const RealityLayer = ({ mode }) => (
           className="absolute inset-0 bg-black"
         >
           <motion.div
-            animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.1, 1] }}
+            animate={{ opacity: [0.4, 0.7, 0.4] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#312e81_0%,_#000000_60%)]"
           />
@@ -79,10 +79,8 @@ const Home = () => {
   useEffect(() => {
     const el = document.documentElement;
     el.style.scrollSnapType = 'y mandatory';
-    el.style.scrollBehavior = 'smooth';
     return () => {
       el.style.scrollSnapType = '';
-      el.style.scrollBehavior = '';
     };
   }, []);
 
@@ -210,7 +208,7 @@ const Home = () => {
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
           >
             <Quotes activeMode={activeMode} />
           </motion.div>
@@ -222,7 +220,7 @@ const Home = () => {
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
             className="flex flex-col items-center"
           >
             <h3 className="text-3xl md:text-6xl font-serif text-white mb-6 leading-tight">
@@ -248,7 +246,7 @@ const Home = () => {
             variants={sectionVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: false, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.3 }}
             className="max-w-xl w-full"
           >
             {/* Bio */}
