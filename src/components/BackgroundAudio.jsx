@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Volume2, VolumeX, Activity } from 'lucide-react';
+import { Music } from 'lucide-react';
 import { useAudio } from '../Context/AudioContext'; 
 
 // --- CONFIGURATION ---
@@ -176,21 +176,17 @@ const BackgroundAudio = () => {
         </AnimatePresence>
 
         <div className={`
-          relative flex items-center justify-center w-10 h-10 rounded-full 
+          relative flex items-center justify-center w-10 h-10 rounded-sm
           border backdrop-blur-md transition-all duration-500
-          ${!isMuted 
-             ? `${activeStyle.bg} ${activeStyle.border}` 
+          ${!isMuted
+             ? 'bg-blue-500/10 border-blue-400/40'
              : 'bg-zinc-900/50 border-white/10'
            }
         `}>
-          {!isMuted ? (
-            <Activity size={16} className={`${activeStyle.icon} animate-pulse transition-colors duration-500`} />
-          ) : (
-            <VolumeX size={16} className="text-zinc-500" />
-          )}
+          <Music size={15} strokeWidth={1.5} className={`transition-colors duration-500 ${!isMuted ? 'text-blue-400' : 'text-zinc-500'}`} />
 
           {!isMuted && (
-            <span className={`absolute inset-0 rounded-full border ${activeStyle.glow} animate-ping opacity-20 transition-colors duration-500`} />
+            <span className="absolute inset-0 rounded-sm border border-blue-400/20 animate-ping opacity-20" />
           )}
         </div>
       </motion.button>

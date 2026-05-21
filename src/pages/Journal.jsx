@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { getPosts } from '../utils/content';
 import PageTransition from '../components/PageTransition';
 import { ArrowRight } from 'lucide-react';
@@ -8,7 +9,10 @@ import { ArrowRight } from 'lucide-react';
 const Journal = () => {
   const posts = getPosts();
   const categories = ['ALL', ...new Set(posts.map(p => p.category))];
-  const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [searchParams] = useSearchParams();
+  const [selectedCategory, setSelectedCategory] = useState(
+    () => searchParams.get('category') || 'ALL'
+  );
 
   const filteredPosts = selectedCategory === 'ALL'
     ? posts
@@ -39,16 +43,24 @@ const Journal = () => {
         to="/contact"
         className="group inline-flex items-center gap-4 px-5 py-3 border border-white/[0.08] rounded-sm bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-white/20 transition-all duration-300 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white"
       >
-        <span>:: Establish Uplink</span>
-        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300 text-blue-500" />
+        <span>Establish Uplink</span>
+        <ArrowRight size={14} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform duration-300 text-blue-500" />
       </Link>
     </motion.div>
   );
 
   return (
     <PageTransition>
+      <Helmet>
+        <title>The Manifesto — Akshat Chauhan</title>
+        <meta name="description" content="Dispatches on design, philosophy, and the science of observation." />
+        <meta property="og:title" content="The Manifesto" />
+        <meta property="og:description" content="Dispatches on design, philosophy, and the science of observation." />
+        <meta property="og:url" content="https://intellectexplorer.com/journal" />
+      </Helmet>
+
       {/* CONTAINER */}
-      <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-5xl mx-auto pb-40 relative z-10">
+      <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-6xl mx-auto pb-40 relative z-10">
         
         {/* === HEADER SECTION === */}
         <div className="mb-16 md:mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -120,20 +132,20 @@ const Journal = () => {
                       </h2>
                       
                       {/* Description */}
-                      <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed line-clamp-2">
+                      <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed line-clamp-2 tracking-wide">
                         {post.description}
                       </p>
                     </div>
 
                     {/* Right: Interaction Icon */}
                     <div className="hidden md:flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-white/10 text-zinc-500 group-hover:bg-white group-hover:text-black transition-all duration-500">
-                      <ArrowRight size={18} className="group-hover:-rotate-45 transition-transform duration-500" />
+                      <ArrowRight size={18} strokeWidth={1.5} className="group-hover:-rotate-45 transition-transform duration-500" />
                     </div>
 
                     {/* Mobile Only Icon */}
                     <div className="md:hidden flex items-center gap-2 text-[10px] font-mono text-zinc-500 uppercase tracking-widest mt-2 group-hover:text-white">
                       <span>Read Entry</span>
-                      <ArrowRight size={12} />
+                      <ArrowRight size={12} strokeWidth={1.5} />
                     </div>
 
                   </div>

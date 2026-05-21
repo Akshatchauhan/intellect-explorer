@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getProjects } from '../utils/content';
 import PageTransition from '../components/PageTransition';
-import { ArrowUpRight, Beaker, Layers, Lock, ArrowRight } from 'lucide-react';
+import { Lock, ArrowRight } from 'lucide-react';
 
 const Portfolio = () => {
   // 1. DATA LOADING
@@ -45,7 +45,7 @@ const Portfolio = () => {
         className="group inline-flex items-center gap-4 px-5 py-3 border border-white/[0.08] rounded-sm bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-white/20 transition-all duration-300 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white"
       >
         <span>Read the Manifesto</span>
-        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300 text-emerald-500" />
+        <ArrowRight size={14} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform duration-300 text-emerald-500" />
       </Link>
     </motion.div>
   );
@@ -69,27 +69,22 @@ const Portfolio = () => {
           {/* TABS (Glass Filter) */}
           <div className="w-full md:w-auto overflow-x-auto no-scrollbar pb-2 md:pb-0">
              <div className="inline-flex items-center gap-1">
-                {[
-                  { id: 'SYSTEMS', icon: <Layers size={12} /> },
-                  { id: 'LAB', icon: <Beaker size={12} /> }
-                ].map((tab) => (
+                {['SYSTEMS', 'LAB'].map((tab) => (
                   <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`relative px-5 py-2 rounded-sm text-[10px] md:text-xs font-mono tracking-widest uppercase transition-colors duration-300 flex items-center gap-2 flex-shrink-0 ${
-                      activeTab === tab.id ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`relative px-5 py-2 rounded-sm text-[10px] md:text-xs font-mono tracking-widest uppercase transition-colors duration-300 flex-shrink-0 ${
+                      activeTab === tab ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
                     }`}
                   >
-                    {activeTab === tab.id && (
+                    {activeTab === tab && (
                       <motion.div
                         layoutId="activeTab"
                         className="absolute inset-0 rounded-sm bg-white/[0.04] border border-white/20"
                         transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
                       />
                     )}
-                    <span className="relative z-10 flex items-center gap-2">
-                      {tab.icon} {tab.id}
-                    </span>
+                    <span className="relative z-10">{tab}</span>
                   </button>
                 ))}
              </div>
@@ -124,10 +119,10 @@ const Portfolio = () => {
                           {/* Image Layer */}
                           <div className="absolute inset-0">
                              {project.image && (
-                               <motion.img 
-                                 src={project.image} 
+                               <img
+                                 src={project.image}
                                  alt={project.title}
-                                 className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                                 className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:[animation-play-state:paused] transition-[opacity,filter] duration-700 ease-out img-drift"
                                />
                              )}
                              {!project.image && <div className="w-full h-full bg-gradient-to-br from-zinc-800 to-zinc-950" />}
@@ -139,40 +134,25 @@ const Portfolio = () => {
                           {/* Lock Status */}
                           {project.password && (
                             <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1 bg-black/60 border border-white/10 rounded-full backdrop-blur-md">
-                               <Lock size={10} className="text-zinc-400" />
+                               <Lock size={10} strokeWidth={1.5} className="text-zinc-400" />
                                <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-400">Restricted</span>
                             </div>
                           )}
 
                           {/* Floating Info */}
-                          <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6">
-                             <div className="flex justify-between items-end gap-4">
-                                <div>
-                                  <span className="font-mono text-[10px] text-blue-400 mb-2 block">
-                                    CASE #{index < 9 ? `00${index + 1}` : `0${index + 1}`}
-                                  </span>
-                                  <h3 className="font-serif text-2xl md:text-3xl text-zinc-100 group-hover:text-white transition-colors break-words">
-                                    {project.title}
-                                  </h3>
-                                </div>
-                                
-                                {!project.password && (
-                                  <div className="h-8 w-8 md:h-10 md:w-10 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center bg-black/20 group-hover:bg-white group-hover:text-black transition-all duration-500">
-                                    <ArrowUpRight size={16} />
-                                  </div>
-                                )}
-                             </div>
+                          <div className="absolute bottom-4 left-4 right-4 md:bottom-6 md:left-6 md:right-6 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out flex items-end justify-between gap-4">
+                            <div>
+                              <span className="font-mono text-[10px] text-blue-400 mb-2 block">
+                                {index < 9 ? `00${index + 1}` : `0${index + 1}`}
+                              </span>
+                              <h3 className="font-serif text-2xl md:text-3xl text-white break-words">
+                                {project.title}
+                              </h3>
+                            </div>
+                            <span className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest flex-shrink-0">
+                              {project.year || 'May 2026'}
+                            </span>
                           </div>
-                        </div>
-
-                        {/* Description Line */}
-                        <div className="mt-4 flex justify-between items-start border-t border-white/[0.08] pt-4">
-                          <p className="text-xs md:text-sm text-zinc-500 font-light max-w-xs leading-relaxed line-clamp-2">
-                            {project.description}
-                          </p>
-                          <span className="px-2 py-1 rounded border border-white/[0.08] text-[10px] font-mono text-zinc-500 uppercase flex-shrink-0">
-                            {project.year || '2026'}
-                          </span>
                         </div>
                       </motion.div>
                     </Link>
@@ -198,34 +178,26 @@ const Portfolio = () => {
                   {labs.map((lab, index) => (
                     <Link to={`/portfolio/${lab.id}`} key={lab.id}>
                       <motion.div
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                        className="group h-full bg-zinc-900/20 border border-white/[0.08] hover:border-white/10 rounded-sm p-5 md:p-6 transition-all duration-300 flex flex-col justify-between"
+                        className="group relative bg-zinc-950 border border-white/[0.06] hover:border-white/20 rounded-sm p-6 md:p-8 transition-all duration-500 flex flex-col justify-between min-h-[200px]"
                       >
                         <div>
-                          <div className="flex justify-between items-start mb-6">
-                            <div className="p-2 bg-white/5 rounded-sm text-zinc-400 group-hover:text-white transition-colors">
-                               <Beaker size={16} />
-                            </div>
-                            {lab.password && <Lock size={14} className="text-zinc-500" />}
-                          </div>
-                          
-                          <h3 className="text-lg font-bold text-zinc-300 group-hover:text-white mb-2 transition-colors break-words">
+                          <span className="font-mono text-[10px] text-zinc-600 group-hover:text-blue-400 transition-colors duration-500 mb-6 block tracking-widest">
+                            {index < 9 ? `00${index + 1}` : `0${index + 1}`}
+                          </span>
+                          <h3 className="font-serif text-xl md:text-2xl text-zinc-300 group-hover:text-white mb-3 transition-colors leading-tight break-words">
                             {lab.title}
                           </h3>
-                          <p className="text-[10px] md:text-xs text-zinc-500 leading-relaxed line-clamp-3 mb-4 font-mono">
+                          <p className="text-xs text-zinc-600 group-hover:text-zinc-400 leading-relaxed font-mono tracking-wide transition-colors duration-500 line-clamp-2 font-light">
                             {lab.description}
                           </p>
                         </div>
-                        
-                        <div className="w-full h-px bg-white/5 group-hover:bg-white/10 transition-colors mb-4" />
-                        
-                        <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex justify-between">
-                          <span>EXP-{index < 9 ? `00${index + 1}` : `0${index + 1}`}</span>
-                          <span className="group-hover:text-blue-400 transition-colors">:: ACCESS</span>
+
+                        <div className="flex items-center justify-between mt-6">
+                          {lab.password && <Lock size={10} strokeWidth={1.5} className="text-zinc-600" />}
+                          <div className="ml-auto w-4 h-px bg-white/10 group-hover:w-8 group-hover:bg-white/40 transition-all duration-500" />
                         </div>
                       </motion.div>
                     </Link>
