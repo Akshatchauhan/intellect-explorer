@@ -1,4 +1,4 @@
-import{g as Wn}from"./index-DdNpY1FH.js";const Gn=`---
+import{g as Wn}from"./index-Ckedzjrh.js";const Gn=`---
 id: close-enough
 title: Close Enough to Understand, Far Enough to Stay
 description: Most people either fix or merge. There is a third way of being present that looks, from the outside, like distance. It isn't.
