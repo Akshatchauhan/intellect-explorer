@@ -97,7 +97,7 @@ const PostView = () => {
         </article>
 
         {/* 4. POST FOOTER */}
-        <div className="mt-16 pt-8 border-t border-white/[0.08] flex items-center justify-between">
+        <div className="mt-16 pt-8 border-t border-white/[0.08] flex flex-col md:flex-row items-start md:items-center justify-between gap-5 md:gap-0">
           <Link to={`/journal?category=${post.category}`}>
             <span className="px-4 py-2 text-xs font-mono font-bold tracking-widest text-blue-400 border border-blue-400/20 rounded-sm uppercase bg-blue-500/5 hover:bg-blue-500/10 hover:border-blue-400/40 transition-all duration-300 cursor-pointer">
               {post.category}
