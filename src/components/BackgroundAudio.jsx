@@ -193,14 +193,14 @@ const BackgroundAudio = () => {
           relative flex items-center justify-center w-10 h-10 rounded-sm
           border backdrop-blur-md transition-all duration-500
           ${!isMuted
-             ? 'bg-blue-500/10 border-blue-400/40'
-             : 'bg-zinc-900/50 border-white/10'
+             ? 'bg-blue-500/20 border-blue-400/60 shadow-[0_0_12px_rgba(96,165,250,0.2)]'
+             : 'bg-zinc-900/50 border-white/20'
            }
         `}>
-          <Music size={15} strokeWidth={1.5} className={`transition-colors duration-500 ${!isMuted ? 'text-blue-400' : 'text-zinc-500'}`} />
+          <Music size={15} strokeWidth={1.5} className={`transition-colors duration-500 ${!isMuted ? 'text-blue-300' : 'text-zinc-400'}`} />
 
           {!isMuted && (
-            <span className="absolute inset-0 rounded-sm border border-blue-400/20 animate-ping opacity-20" />
+            <span className="absolute inset-0 rounded-sm border border-blue-400/40 animate-ping opacity-30" />
           )}
         </div>
       </motion.button>

@@ -6,6 +6,30 @@ import { getPosts } from '../utils/content';
 import PageTransition from '../components/PageTransition';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 
+const EmptyJournal = () => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.8 }}
+    className="flex flex-col items-center justify-center py-20 text-center"
+  >
+    <h3 className="font-serif text-3xl md:text-4xl text-zinc-300 mb-4 tracking-tight">
+      The frequency is <span className="italic text-zinc-600">silent.</span>
+    </h3>
+    <p className="text-zinc-500 text-sm max-w-md mb-12 leading-relaxed font-light">
+      No transmissions logged in this frequency yet. <br/>
+      The signal is still forming.
+    </p>
+    <Link
+      to="/contact"
+      className="group inline-flex items-center gap-4 px-5 py-3 border border-white/[0.08] rounded-sm bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-white/20 transition-all duration-300 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white"
+    >
+      <span>Establish Uplink</span>
+      <ArrowRight size={14} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform duration-300 text-blue-500" />
+    </Link>
+  </motion.div>
+);
+
 const Journal = () => {
   const posts = getPosts();
   const { scrollY } = useScroll();
@@ -23,37 +47,6 @@ const Journal = () => {
   const filteredPosts = selectedCategory === 'ALL'
     ? posts
     : posts.filter(post => post.category === selectedCategory);
-
-  // --- EMPTY STATE: "THE SILENT FREQUENCY" (Matches Portfolio Style) ---
-  const EmptyJournal = () => (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-      // Matching padding from Portfolio
-      className="flex flex-col items-center justify-center py-20 text-center"
-    >
-      {/* 1. Elegant Typography (Matching Portfolio structure) */}
-      <h3 className="font-serif text-3xl md:text-4xl text-zinc-300 mb-4 tracking-tight">
-        The frequency is <span className="italic text-zinc-600">silent.</span>
-      </h3>
-      
-      {/* Matching margin-bottom (mb-12) and styling */}
-      <p className="text-zinc-500 text-sm max-w-md mb-12 leading-relaxed font-light">
-        No transmissions logged in this frequency yet. <br/>
-        The signal is still forming.
-      </p>
-      
-      {/* 2. Contact Link (Matches Portfolio Link Style with Arrow) */}
-      <Link
-        to="/contact"
-        className="group inline-flex items-center gap-4 px-5 py-3 border border-white/[0.08] rounded-sm bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-white/20 transition-all duration-300 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white"
-      >
-        <span>Establish Uplink</span>
-        <ArrowRight size={14} strokeWidth={1.5} className="group-hover:translate-x-1 transition-transform duration-300 text-blue-500" />
-      </Link>
-    </motion.div>
-  );
 
   return (
     <PageTransition>
