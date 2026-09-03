@@ -31,7 +31,7 @@ const Orb = ({ color, style, animate: anim, transition, blur = 80 }) => (
   />
 );
 
-const KNOWN_PATHS = ['/portfolio', '/journal', '/contact'];
+const KNOWN_PATHS = ['/archive', '/journal', '/contact'];
 
 const Background = () => {
   const { pathname: path } = useLocation();
@@ -85,7 +85,7 @@ const Background = () => {
         )}
 
         {/* PORTFOLIO: sapphire-dominant — intellectual, deep water */}
-        {path.includes('/portfolio') && (
+        {path.includes('/archive') && (
           <motion.div key="portfolio" {...fadeProps} className="absolute inset-0">
             <Orb blur={blur} color={SAPPHIRE}
               style={{ width: '85vw', height: '85vw', top: '-30%', left: '-20%' }}

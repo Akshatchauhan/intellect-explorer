@@ -7,7 +7,7 @@ import { ArrowRight } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
 
 const DESTINATIONS = [
-  { to: '/portfolio', label: 'the Archive',    caption: 'Directory / Work' },
+  { to: '/archive', label: 'the Archive',    caption: 'Directory / Work' },
   { to: '/journal',   label: 'the Manifesto',  caption: 'Dispatches / Ongoing' },
   { to: '/contact',   label: 'the Uplink',     caption: 'Transmission / Open' },
 ];

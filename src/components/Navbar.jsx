@@ -31,12 +31,12 @@ const IconUplink = () => (
 // Static data — defined outside so they are never recreated on render
 const LINKS = [
   { path: '/',          label: 'Home',      Icon: IconHome },
-  { path: '/portfolio', label: 'Archive',   Icon: IconArchive },
+  { path: '/archive', label: 'Archive',   Icon: IconArchive },
   { path: '/journal',   label: 'Manifesto', Icon: IconManifesto },
   { path: '/contact',   label: 'Uplink',    Icon: IconUplink },
 ];
 
-const MAIN_ROUTES = ['/', '/portfolio', '/journal', '/contact'];
+const MAIN_ROUTES = ['/', '/archive', '/journal', '/contact'];
 
 const dockVariants = {
   hidden: {

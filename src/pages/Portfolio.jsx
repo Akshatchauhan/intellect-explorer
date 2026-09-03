@@ -61,7 +61,7 @@ const Portfolio = () => {
         <meta name="description" content="Selected systems and experiments in behavioural design, interface architecture, and applied cognitive science." />
         <meta property="og:title" content="The Archive" />
         <meta property="og:description" content="Selected systems and experiments in behavioural design, interface architecture, and applied cognitive science." />
-        <meta property="og:url" content="https://intellectexplorer.com/portfolio" />
+        <meta property="og:url" content="https://intellectexplorer.com/archive" />
       </Helmet>
 
       {/* CONTAINER */}
@@ -164,7 +164,7 @@ const Portfolio = () => {
               {systems.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                   {systems.map((project, index) => (
-                    <Link to={`/portfolio/${project.id}`} key={project.id}>
+                    <Link to={`/archive/${project.id}`} key={project.id}>
                       <motion.div 
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -234,7 +234,7 @@ const Portfolio = () => {
               {labs.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                   {labs.map((lab, index) => (
-                    <Link to={`/portfolio/${lab.id}`} key={lab.id}>
+                    <Link to={`/archive/${lab.id}`} key={lab.id}>
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}

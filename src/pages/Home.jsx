@@ -27,7 +27,7 @@ const RealityLayer = ({ mode }) => (
             className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#312e81_0%,_#000000_60%)]"
           />
           <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.9)] md:shadow-[inset_0_0_300px_rgba(0,0,0,1)]" />
-          <div className="absolute inset-0 opacity-30 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay" />
+          <div className="absolute inset-0 opacity-30 bg-[url('/noise.svg')] mix-blend-overlay" />
         </motion.div>
       )}
 
@@ -86,7 +86,7 @@ const Home = () => {
 
   const handleAccess = () => {
     setIsNavigating(true);
-    setTimeout(() => navigate('/portfolio'), 2000);
+    setTimeout(() => navigate('/archive'), 2000);
   };
 
 

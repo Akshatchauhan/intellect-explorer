@@ -242,7 +242,7 @@ const Contact = () => {
               <sup className="text-[10px] text-zinc-500 font-mono">TM</sup>
             </div>
             <div className="mt-2 font-mono text-[10px] text-zinc-500 uppercase tracking-widest">
-              <span>© 2026 Akshat Chauhan.</span>
+              <span>© {new Date().getFullYear()} Akshat Chauhan.</span>
               <span className="mx-2 text-zinc-800">|</span>
               <span>All Rights Reserved.</span>
             </div>

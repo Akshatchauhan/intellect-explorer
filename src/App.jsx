@@ -67,8 +67,8 @@ function App() {
               <AnimatePresence mode="wait">
                 <Routes>
                   <Route path="/"             element={<Home />} />
-                  <Route path="/portfolio"    element={<Portfolio />} />
-                  <Route path="/portfolio/:id" element={<ProjectView />} />
+                  <Route path="/archive"    element={<Portfolio />} />
+                  <Route path="/archive/:id" element={<ProjectView />} />
                   <Route path="/journal"      element={<Journal />} />
                   <Route path="/journal/:id"  element={<PostView />} />
                   <Route path="/contact"      element={<Contact />} />

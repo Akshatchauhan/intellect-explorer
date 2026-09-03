@@ -40,7 +40,7 @@ const ProjectView = () => {
       <LockScreen 
         correctPassword={project.password} 
         onUnlock={handleUnlock}
-        onClose={() => navigate('/portfolio')}
+        onClose={() => navigate('/archive')}
       />
     );
   }
@@ -51,7 +51,7 @@ const ProjectView = () => {
       <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-3xl mx-auto pb-40 relative z-10">
         
         {/* 1. BACK BUTTON */}
-        <Link to="/portfolio">
+        <Link to="/archive">
           <motion.div 
             whileHover={{ x: -5 }}
             className="inline-flex items-center gap-2 text-zinc-500 hover:text-white mb-8 md:mb-12 cursor-pointer transition-colors group"
@@ -147,7 +147,7 @@ const ProjectView = () => {
 
         {/* 4. BOTTOM NAVIGATION */}
         <div className="mt-24 flex justify-center">
-          <Link to="/portfolio">
+          <Link to="/archive">
             <span className="font-mono text-xs tracking-widest uppercase text-zinc-500 hover:text-white transition-colors duration-500 underline underline-offset-4 decoration-zinc-700 hover:decoration-white">
               Return to <span className="font-serif italic normal-case tracking-normal font-normal">the Archive</span>
             </span>
