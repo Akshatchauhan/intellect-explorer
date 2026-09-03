@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import { getProjects } from '../utils/content';
 import LockScreen from '../components/LockScreen';
 import PageTransition from '../components/PageTransition';
+import ImageSlider from '../components/ImageSlider';
 
 const ProjectView = () => {
   const { id } = useParams();
@@ -140,7 +141,17 @@ const ProjectView = () => {
           prose-code:text-blue-300 prose-code:bg-zinc-900 prose-code:px-1 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
           prose-img:rounded-sm prose-img:border prose-img:border-white/10"
         >
-          <ReactMarkdown>
+          <ReactMarkdown
+            components={{
+              img: ({node, ...props}) => {
+                if (props.alt === 'slider') {
+                  const [before, after] = props.src.split(',');
+                  return <ImageSlider before={before.trim()} after={after.trim()} />;
+                }
+                return <img {...props} />;
+              }
+            }}
+          >
             {project.content}
           </ReactMarkdown>
         </article>
