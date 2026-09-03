@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { Mail, FileText, ArrowUpRight, Download, MapPin, X } from 'lucide-react';
 
 const IconLinkedIn = () => (
@@ -86,6 +87,14 @@ const Contact = () => {
 
   return (
     <PageTransition>
+      <Helmet>
+        <title>The Uplink — Akshat Chauhan</title>
+        <meta name="description" content="Get in touch with Akshat Chauhan — designer and systems thinker based in New Delhi. Resume, email, and LinkedIn." />
+        <meta property="og:title" content="The Uplink" />
+        <meta property="og:description" content="Get in touch with Akshat Chauhan — designer and systems thinker based in New Delhi." />
+        <meta property="og:url" content="https://intellectexplorer.com/contact" />
+      </Helmet>
+
       {/* CONTAINER */}
       <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-4xl mx-auto pb-36 md:pb-20 relative z-10 flex flex-col justify-between">
 

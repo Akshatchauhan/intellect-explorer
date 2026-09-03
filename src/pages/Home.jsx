@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet-async';
 import PageTransition from '../components/PageTransition';
 import GridFrame from '../components/GridFrame';
 import Quotes from '../components/Quotes';
-import { useAudioActions } from '../Context/AudioContext';
+import { useModeActions } from '../Context/ModeContext';
 
 const RealityLayer = ({ mode }) => (
   <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
@@ -61,19 +61,19 @@ const sectionVariants = {
 
 const Home = () => {
   const navigate = useNavigate();
-  const { setMood } = useAudioActions();
+  const { setMode } = useModeActions();
 
   const [activeMode, setActiveMode] = useState(null);
   const [isNavigating, setIsNavigating] = useState(false);
 
   useEffect(() => {
-    return () => setMood('default');
+    return () => setMode('default');
   }, []);
 
   const handleModeClick = (mode) => {
     const newMode = activeMode === mode ? null : mode;
     setActiveMode(newMode);
-    setMood(newMode || 'default');
+    setMode(newMode || 'default');
   };
 
   useEffect(() => {

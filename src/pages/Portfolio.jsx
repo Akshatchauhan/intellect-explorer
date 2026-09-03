@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { getProjects } from '../utils/content';
 import PageTransition from '../components/PageTransition';
 import { Lock, ArrowRight } from 'lucide-react';
@@ -55,6 +56,14 @@ const Portfolio = () => {
 
   return (
     <PageTransition>
+      <Helmet>
+        <title>The Archive — Akshat Chauhan</title>
+        <meta name="description" content="Selected systems and experiments in behavioural design, interface architecture, and applied cognitive science." />
+        <meta property="og:title" content="The Archive" />
+        <meta property="og:description" content="Selected systems and experiments in behavioural design, interface architecture, and applied cognitive science." />
+        <meta property="og:url" content="https://intellectexplorer.com/portfolio" />
+      </Helmet>
+
       {/* CONTAINER */}
       <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-6xl mx-auto pb-40 relative z-10">
         

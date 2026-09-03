@@ -31,8 +31,13 @@ const Orb = ({ color, style, animate: anim, transition, blur = 80 }) => (
   />
 );
 
+const KNOWN_PATHS = ['/portfolio', '/journal', '/contact'];
+
 const Background = () => {
   const { pathname: path } = useLocation();
+  // Anything that isn't the homepage or a known section (i.e. a 404) still
+  // needs a field behind it — otherwise the page reads as broken, not styled.
+  const isUnknown = path !== '/' && !KNOWN_PATHS.some((p) => path.includes(p));
   // Halve blur on mobile — blur(80px) on a ~270px orb spreads colour too
   // thin to see. Also used to gate the iOS Safari GPU-layer fix below.
   const blur = window.innerWidth < 768 ? 40 : 80;
@@ -138,6 +143,23 @@ const Background = () => {
               style={{ width: '40vw', height: '40vw', bottom: '10%', left: '-5%', opacity: 0.40 }}
               animate={{ x: [-10, 10, -10] }}
               transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+            />
+          </motion.div>
+        )}
+
+        {/* FALLBACK (404 and any unmatched route): violet-dominant, dimmer —
+            present enough to read as designed, quiet enough to read as an error */}
+        {isUnknown && (
+          <motion.div key="unknown" {...fadeProps} className="absolute inset-0">
+            <Orb blur={blur} color={VIOLET}
+              style={{ width: '70vw', height: '70vw', top: '-25%', left: '-10%', opacity: 0.55 }}
+              animate={{ x: [-14, 14, -14], y: [-10, 14, -10] }}
+              transition={{ duration: 28, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <Orb blur={blur} color={SAPPHIRE}
+              style={{ width: '55vw', height: '55vw', bottom: '-20%', right: '-10%', opacity: 0.45 }}
+              animate={{ x: [12, -14, 12], y: [8, -12, 8] }}
+              transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
             />
           </motion.div>
         )}

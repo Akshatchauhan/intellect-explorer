@@ -2,10 +2,9 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { AudioProvider } from './Context/AudioContext';
+import { ModeProvider } from './Context/ModeContext';
 
 // Always-on shell components — loaded eagerly
-import BackgroundAudio from './components/BackgroundAudio';
 import Navbar from './components/Navbar';
 import Background from './components/Background';
 import CustomCursor from './components/CustomCursor';
@@ -21,6 +20,7 @@ const ProjectView = lazy(() => import('./pages/ProjectView'));
 const Journal     = lazy(() => import('./pages/Journal'));
 const PostView    = lazy(() => import('./pages/PostView'));
 const Contact     = lazy(() => import('./pages/Contact'));
+const NotFound    = lazy(() => import('./pages/NotFound'));
 
 function App() {
 
@@ -32,7 +32,7 @@ function App() {
 
   return (
     <Router>
-      <AudioProvider>
+      <ModeProvider>
 
         <AnalyticsTracker />
         <ScrollToTop />
@@ -45,14 +45,14 @@ function App() {
           <meta property="og:type" content="website" />
           <meta property="og:title" content="Intellect Explorer | Akshat Chauhan" />
           <meta property="og:description" content="Decoding the architecture of the human mind through design." />
-          <meta property="og:image" content="https://intellectexplorer.com/og-image.jpg" />
+          <meta property="og:image" content="https://intellectexplorer.com/og-image.png" />
           <meta property="og:url" content="https://intellectexplorer.com/" />
           <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:image" content="https://intellectexplorer.com/og-image.png" />
         </Helmet>
 
         <Background />
         <NoiseOverlay />
-        <BackgroundAudio />
         <Navbar />
         <CustomCursor />
 
@@ -72,6 +72,7 @@ function App() {
                   <Route path="/journal"      element={<Journal />} />
                   <Route path="/journal/:id"  element={<PostView />} />
                   <Route path="/contact"      element={<Contact />} />
+                  <Route path="*"             element={<NotFound />} />
                 </Routes>
               </AnimatePresence>
             </Suspense>
@@ -79,7 +80,7 @@ function App() {
 
         </div>
 
-      </AudioProvider>
+      </ModeProvider>
     </Router>
   );
 }

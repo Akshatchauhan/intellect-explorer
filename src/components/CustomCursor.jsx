@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
-import { useAudioState } from '../Context/AudioContext';
+import { useModeState } from '../Context/ModeContext';
 
 // Defined outside so they are never recreated on render
 const VARIANTS = {
@@ -63,7 +63,7 @@ const VARIANTS = {
 };
 
 const CustomCursor = () => {
-  const { currentMood: activeMode } = useAudioState();
+  const { currentMode: activeMode } = useModeState();
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
