@@ -92,7 +92,7 @@ const Contact = () => {
         <meta name="description" content="Get in touch with Akshat Chauhan — designer and systems thinker based in New Delhi. Resume, email, and LinkedIn." />
         <meta property="og:title" content="The Uplink" />
         <meta property="og:description" content="Get in touch with Akshat Chauhan — designer and systems thinker based in New Delhi." />
-        <meta property="og:url" content="https://intellectexplorer.com/contact" />
+        <meta property="og:url" content="https://intellectexplorer.com/uplink" />
       </Helmet>
 
       {/* CONTAINER */}

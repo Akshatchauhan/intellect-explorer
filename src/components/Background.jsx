@@ -31,7 +31,7 @@ const Orb = ({ color, style, animate: anim, transition, blur = 80 }) => (
   />
 );
 
-const KNOWN_PATHS = ['/archive', '/journal', '/contact'];
+const KNOWN_PATHS = ['/archive', '/manifesto', '/uplink'];
 
 const Background = () => {
   const { pathname: path } = useLocation();
@@ -106,7 +106,7 @@ const Background = () => {
         )}
 
         {/* JOURNAL: garnet-dominant — personal, like dark velvet or wine */}
-        {path.includes('/journal') && (
+        {path.includes('/manifesto') && (
           <motion.div key="journal" {...fadeProps} className="absolute inset-0">
             <Orb blur={blur} color={GARNET}
               style={{ width: '80vw', height: '80vw', top: '-25%', right: '-20%' }}
@@ -127,7 +127,7 @@ const Background = () => {
         )}
 
         {/* CONTACT: gold-dominant — warm, the light at the end of the hall */}
-        {path.includes('/contact') && (
+        {path.includes('/uplink') && (
           <motion.div key="contact" {...fadeProps} className="absolute inset-0">
             <Orb blur={blur} color={GOLD}
               style={{ width: '78vw', height: '78vw', top: '-20%', left: '10%' }}

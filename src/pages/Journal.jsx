@@ -21,7 +21,7 @@ const EmptyJournal = () => (
       The signal is still forming.
     </p>
     <Link
-      to="/contact"
+      to="/uplink"
       className="group inline-flex items-center gap-4 px-5 py-3 border border-white/[0.08] rounded-sm bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-white/20 transition-all duration-300 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white"
     >
       <span>Establish Uplink</span>
@@ -55,7 +55,7 @@ const Journal = () => {
         <meta name="description" content="Dispatches on design, philosophy, and the science of observation." />
         <meta property="og:title" content="The Manifesto" />
         <meta property="og:description" content="Dispatches on design, philosophy, and the science of observation." />
-        <meta property="og:url" content="https://intellectexplorer.com/journal" />
+        <meta property="og:url" content="https://intellectexplorer.com/manifesto" />
       </Helmet>
 
       {/* CONTAINER */}
@@ -189,7 +189,7 @@ const Journal = () => {
             className="space-y-4"
           >
             {filteredPosts.map((post) => (
-              <Link key={post.id} to={`/journal/${post.id}`} className="block">
+              <Link key={post.id} to={`/manifesto/${post.id}`} className="block">
                 <div
                   className="group relative p-5 md:p-8 border border-white/[0.08] bg-zinc-900/20 hover:bg-zinc-900/50 transition-all duration-500 rounded-sm hover:border-white/10"
                 >

@@ -8,8 +8,8 @@ import PageTransition from '../components/PageTransition';
 
 const DESTINATIONS = [
   { to: '/archive', label: 'the Archive',    caption: 'Directory / Work' },
-  { to: '/journal',   label: 'the Manifesto',  caption: 'Dispatches / Ongoing' },
-  { to: '/contact',   label: 'the Uplink',     caption: 'Transmission / Open' },
+  { to: '/manifesto',   label: 'the Manifesto',  caption: 'Dispatches / Ongoing' },
+  { to: '/uplink',   label: 'the Uplink',     caption: 'Transmission / Open' },
 ];
 
 const NotFound = () => (

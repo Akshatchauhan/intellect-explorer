@@ -40,7 +40,7 @@ const PostView = () => {
         <meta name="description" content={post.description} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.description} />
-        <meta property="og:url" content={`https://intellectexplorer.com/journal/${post.id}`} />
+        <meta property="og:url" content={`https://intellectexplorer.com/manifesto/${post.id}`} />
         <meta property="og:type" content="article" />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content={post.title} />
@@ -50,7 +50,7 @@ const PostView = () => {
       <div className="min-h-screen pt-28 md:pt-32 px-4 md:px-6 max-w-3xl mx-auto pb-40 relative z-10">
 
         {/* 1. BACK BUTTON */}
-        <Link to="/journal">
+        <Link to="/manifesto">
           <motion.div 
             whileHover={{ x: -5 }}
             className="inline-flex items-center gap-2 text-zinc-500 hover:text-white mb-8 md:mb-12 cursor-pointer transition-colors group"
@@ -121,7 +121,7 @@ const PostView = () => {
           </div>
 
           {/* Row 2: return link */}
-          <Link to="/journal">
+          <Link to="/manifesto">
             <span className="font-mono text-sm tracking-widest uppercase text-zinc-500 hover:text-white transition-colors duration-500 underline underline-offset-4 decoration-zinc-700 hover:decoration-white">
               Return to <span className="font-serif italic normal-case tracking-normal font-normal">the Manifesto</span>
             </span>

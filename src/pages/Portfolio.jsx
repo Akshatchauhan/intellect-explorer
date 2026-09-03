@@ -27,7 +27,7 @@ const EmptySector = ({ type }) => (
       
       {/* 2. The "Ghost" Link */}
       <Link
-        to="/journal"
+        to="/manifesto"
         className="group inline-flex items-center gap-4 px-5 py-3 border border-white/[0.08] rounded-sm bg-zinc-900/20 hover:bg-zinc-900/50 hover:border-white/20 transition-all duration-300 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 hover:text-white"
       >
         <span>Read the Manifesto</span>

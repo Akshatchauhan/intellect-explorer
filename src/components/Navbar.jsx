@@ -32,11 +32,11 @@ const IconUplink = () => (
 const LINKS = [
   { path: '/',          label: 'Home',      Icon: IconHome },
   { path: '/archive', label: 'Archive',   Icon: IconArchive },
-  { path: '/journal',   label: 'Manifesto', Icon: IconManifesto },
-  { path: '/contact',   label: 'Uplink',    Icon: IconUplink },
+  { path: '/manifesto',   label: 'Manifesto', Icon: IconManifesto },
+  { path: '/uplink',   label: 'Uplink',    Icon: IconUplink },
 ];
 
-const MAIN_ROUTES = ['/', '/archive', '/journal', '/contact'];
+const MAIN_ROUTES = ['/', '/archive', '/manifesto', '/uplink'];
 
 const dockVariants = {
   hidden: {

@@ -69,9 +69,9 @@ function App() {
                   <Route path="/"             element={<Home />} />
                   <Route path="/archive"    element={<Portfolio />} />
                   <Route path="/archive/:id" element={<ProjectView />} />
-                  <Route path="/journal"      element={<Journal />} />
-                  <Route path="/journal/:id"  element={<PostView />} />
-                  <Route path="/contact"      element={<Contact />} />
+                  <Route path="/manifesto"      element={<Journal />} />
+                  <Route path="/manifesto/:id"  element={<PostView />} />
+                  <Route path="/uplink"      element={<Contact />} />
                   <Route path="*"             element={<NotFound />} />
                 </Routes>
               </AnimatePresence>
